@@ -40,6 +40,14 @@ const ProfessionalPortal = () => {
     pathogens: ['Distemper', 'Adenovirus tipo 1', 'Adenovirus tipo 2', 'Parainfluenza', 'Parvovirus']
   });
 
+  const [examData, setExamData] = useState({
+    examType: '',
+    urgency: 'normal',
+    fastingRequired: false,
+    instructions: '',
+    observations: ''
+  });
+
   // Mock data for demonstration
   const [patientHistory] = useState([
     {
@@ -59,6 +67,58 @@ const ProfessionalPortal = () => {
       notes: 'Paciente en excelente estado'
     }
   ]);
+
+  // Available exams with automatic instructions
+  const availableExams = [
+    {
+      id: 'hemograma',
+      name: 'Hemograma Completo',
+      category: 'Hematología',
+      defaultInstructions: 'Ayuno de 12 horas. Traer a la mascota en ayunas desde las 8:00 PM del día anterior.',
+      fastingRequired: true,
+      urgency: 'normal'
+    },
+    {
+      id: 'bioquimica',
+      name: 'Perfil Bioquímico',
+      category: 'Bioquímica',
+      defaultInstructions: 'Ayuno de 12 horas. No dar agua 2 horas antes del examen. Evitar ejercicio intenso 24 horas antes.',
+      fastingRequired: true,
+      urgency: 'normal'
+    },
+    {
+      id: 'orina',
+      name: 'Examen de Orina',
+      category: 'Urianálisis',
+      defaultInstructions: 'Recolectar primera orina de la mañana en frasco estéril. Mantener refrigerada hasta el examen.',
+      fastingRequired: false,
+      urgency: 'normal'
+    },
+    {
+      id: 'coprologico',
+      name: 'Examen Coprológico',
+      category: 'Parasitología',
+      defaultInstructions: 'Recolectar muestra fresca de deposición en frasco estéril. Traer dentro de 2 horas de recolectada.',
+      fastingRequired: false,
+      urgency: 'normal'
+    },
+    {
+      id: 'radiografia',
+      name: 'Radiografía',
+      category: 'Imagenología',
+      defaultInstructions: 'No requiere ayuno. Mantener a la mascota tranquila durante el traslado.',
+      fastingRequired: false,
+      urgency: 'normal'
+    },
+    {
+      id: 'ecografia',
+      name: 'Ecografía Abdominal',
+      category: 'Imagenología',
+      defaultInstructions: 'Ayuno de 12 horas. Vejiga llena (no orinar 2 horas antes). Mantener tranquila durante el traslado.',
+      fastingRequired: true,
+      urgency: 'normal'
+    }
+  ];
 
   useEffect(() => {
     if (!loading && !user) {
@@ -102,6 +162,48 @@ const ProfessionalPortal = () => {
   const handleRutInput = (value: string) => {
     const formatted = formatRut(value);
     setSearchData({ ...searchData, rut: formatted });
+  };
+
+  const handleExamSelect = (examId: string) => {
+    const exam = availableExams.find(e => e.id === examId);
+    if (exam) {
+      setExamData({
+        ...examData,
+        examType: examId,
+        fastingRequired: exam.fastingRequired,
+        instructions: exam.defaultInstructions,
+        urgency: exam.urgency
+      });
+    }
+  };
+
+  const generateExamOrder = () => {
+    const exam = availableExams.find(e => e.id === examData.examType);
+    if (!exam) {
+      toast({
+        title: "Error",
+        description: "Selecciona un tipo de examen",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const orderNumber = `ORD-${Date.now()}`;
+    
+    // Here you would implement PDF generation with html2pdf
+    toast({
+      title: "Orden de examen generada",
+      description: `Orden ${orderNumber} para ${exam.name} generándose con html2pdf`,
+    });
+
+    // Reset form
+    setExamData({
+      examType: '',
+      urgency: 'normal',
+      fastingRequired: false,
+      instructions: '',
+      observations: ''
+    });
   };
 
   const generateCertificate = (type: string) => {
@@ -172,7 +274,62 @@ const ProfessionalPortal = () => {
           </div>
         </div>
 
-        {/* Search Bar */}
+        {/* Navigation Tabs */}
+        <div className="mb-6">
+          <div className="border-b border-gray-200">
+            <nav className="flex space-x-8 overflow-x-auto">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  activeTab === 'dashboard' 
+                    ? 'border-mint text-mint' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-chart-line mr-2"></i>
+                Dashboard
+              </button>
+              <button
+                onClick={() => setActiveTab('patients')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  activeTab === 'patients' 
+                    ? 'border-mint text-mint' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-paw mr-2"></i>
+                Pacientes
+              </button>
+              <button
+                onClick={() => setActiveTab('exams')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  activeTab === 'exams' 
+                    ? 'border-mint text-mint' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-flask mr-2"></i>
+                Solicitar Exámenes
+              </button>
+              <button
+                onClick={() => setActiveTab('certificates')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  activeTab === 'certificates' 
+                    ? 'border-mint text-mint' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-certificate mr-2"></i>
+                Certificados
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'dashboard' && (
+          <div>
+            {/* Search Bar */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="font-poppins">Buscar Paciente</CardTitle>
@@ -450,6 +607,206 @@ const ProfessionalPortal = () => {
             </div>
           </CardContent>
         </Card>
+          </div>
+        )}
+
+        {/* Exam Request Tab */}
+        {activeTab === 'exams' && (
+          <div>
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="font-poppins flex items-center">
+                  <i className="fas fa-flask text-mint mr-2"></i>
+                  Solicitar Exámenes de Laboratorio
+                </CardTitle>
+                <p className="text-gray-600 font-lato">Genera automáticamente órdenes médicas con indicaciones para el tutor</p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Patient Selection */}
+                <div>
+                  <Label className="text-base font-semibold">Información del Paciente</Label>
+                  <div className="grid md:grid-cols-3 gap-4 mt-2 p-4 bg-mint/5 rounded-lg">
+                    <div>
+                      <Label htmlFor="patientName">Nombre de la mascota</Label>
+                      <Input
+                        id="patientName"
+                        placeholder="Max"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="tutorName">Nombre del tutor</Label>
+                      <Input
+                        id="tutorName"
+                        placeholder="Juan Pérez"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="tutorPhone">Teléfono</Label>
+                      <Input
+                        id="tutorPhone"
+                        placeholder="+56 9 1234 5678"
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Exam Selection */}
+                <div>
+                  <Label className="text-base font-semibold">Tipo de Examen</Label>
+                  <Select onValueChange={handleExamSelect}>
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder="Seleccionar tipo de examen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableExams.map((exam) => (
+                        <SelectItem key={exam.id} value={exam.id}>
+                          <div className="flex flex-col">
+                            <span className="font-medium">{exam.name}</span>
+                            <span className="text-sm text-gray-500">{exam.category}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Exam Details */}
+                {examData.examType && (
+                  <div className="p-4 bg-lavender/10 rounded-lg space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-darkgray">
+                        {availableExams.find(e => e.id === examData.examType)?.name}
+                      </h4>
+                      {examData.fastingRequired && (
+                        <div className="flex items-center space-x-2 text-orange-600">
+                          <i className="fas fa-exclamation-triangle"></i>
+                          <span className="text-sm font-medium">Requiere ayuno</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="urgency">Urgencia</Label>
+                        <Select 
+                          value={examData.urgency}
+                          onValueChange={(value) => setExamData({ ...examData, urgency: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="normal">Normal (2-3 días)</SelectItem>
+                            <SelectItem value="urgente">Urgente (24 horas)</SelectItem>
+                            <SelectItem value="emergencia">Emergencia (inmediato)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="fasting"
+                          checked={examData.fastingRequired}
+                          onChange={(e) => setExamData({ ...examData, fastingRequired: e.target.checked })}
+                          className="rounded"
+                        />
+                        <Label htmlFor="fasting">Requiere ayuno</Label>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Instructions */}
+                <div>
+                  <Label htmlFor="instructions" className="text-base font-semibold">
+                    Instrucciones para el Tutor
+                  </Label>
+                  <textarea
+                    id="instructions"
+                    value={examData.instructions}
+                    onChange={(e) => setExamData({ ...examData, instructions: e.target.value })}
+                    className="w-full mt-2 p-3 border border-gray-300 rounded-lg h-24 resize-none"
+                    placeholder="Las instrucciones se generan automáticamente según el tipo de examen..."
+                  />
+                </div>
+
+                {/* Observations */}
+                <div>
+                  <Label htmlFor="observations">Observaciones Médicas (Opcional)</Label>
+                  <textarea
+                    id="observations"
+                    value={examData.observations}
+                    onChange={(e) => setExamData({ ...examData, observations: e.target.value })}
+                    className="w-full mt-2 p-3 border border-gray-300 rounded-lg h-20 resize-none"
+                    placeholder="Información adicional sobre el paciente o el examen solicitado..."
+                  />
+                </div>
+
+                {/* Generate Button */}
+                <div className="flex justify-end space-x-4 pt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setExamData({
+                      examType: '',
+                      urgency: 'normal',
+                      fastingRequired: false,
+                      instructions: '',
+                      observations: ''
+                    })}
+                  >
+                    Limpiar Formulario
+                  </Button>
+                  <Button
+                    onClick={generateExamOrder}
+                    className="bg-mint text-darkgray hover:bg-mint/80"
+                    disabled={!examData.examType}
+                  >
+                    <i className="fas fa-file-pdf mr-2"></i>
+                    Generar Orden de Examen
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Example Orders */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-poppins flex items-center">
+                  <i className="fas fa-file-contract text-turquoise mr-2"></i>
+                  Órdenes Generadas Recientemente
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <span className="font-medium">ORD-2023120801 - Hemograma Completo</span>
+                      <p className="text-sm text-gray-600">Max (Canino) - Juan Pérez - 15/12/2023</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-download mr-1"></i>
+                      Descargar
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <span className="font-medium">ORD-2023120702 - Perfil Bioquímico</span>
+                      <p className="text-sm text-gray-600">Luna (Felino) - María Silva - 14/12/2023</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-download mr-1"></i>
+                      Descargar
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
       </div>
     </div>
   );
