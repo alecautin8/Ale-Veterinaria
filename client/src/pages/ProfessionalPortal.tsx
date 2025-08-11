@@ -80,48 +80,170 @@ const ProfessionalPortal = () => {
       id: 'hemograma',
       name: 'Hemograma Completo',
       category: 'Hematología',
-      defaultInstructions: 'Ayuno de 12 horas. Traer a la mascota en ayunas desde las 8:00 PM del día anterior.',
+      defaultInstructions: `PREPARACIÓN PARA HEMOGRAMA COMPLETO:
+
+• AYUNO: 12 horas mínimo
+• HORARIO: No alimentar desde las 20:00 hrs del día anterior
+• AGUA: Permitida hasta 2 horas antes del examen
+• MEDICAMENTOS: Consultar si debe suspender algún medicamento
+• EJERCICIO: Evitar ejercicio intenso 24 horas antes
+• LLEGADA: Puntual a la hora agendada para evitar estrés
+
+IMPORTANTE: Traer a la mascota tranquila y en ayunas completo.`,
       fastingRequired: true,
       urgency: 'normal'
     },
     {
       id: 'bioquimica',
-      name: 'Perfil Bioquímico',
+      name: 'Perfil Bioquímico Completo',
       category: 'Bioquímica',
-      defaultInstructions: 'Ayuno de 12 horas. No dar agua 2 horas antes del examen. Evitar ejercicio intenso 24 horas antes.',
+      defaultInstructions: `PREPARACIÓN PARA PERFIL BIOQUÍMICO:
+
+• AYUNO ESTRICTO: 12-14 horas
+• HORARIO: No alimentar desde las 19:00 hrs del día anterior
+• AGUA: Retirar 3 horas antes del examen
+• MEDICAMENTOS: Suspender vitaminas y suplementos 24 hrs antes
+• EJERCICIO: Reposo relativo 24 horas previas
+• ESTRÉS: Mantener ambiente calmado antes del examen
+
+INCLUYE: Función renal, hepática, glucosa, proteínas, electrolitos.`,
       fastingRequired: true,
       urgency: 'normal'
     },
     {
       id: 'orina',
-      name: 'Examen de Orina',
+      name: 'Examen Completo de Orina',
       category: 'Urianálisis',
-      defaultInstructions: 'Recolectar primera orina de la mañana en frasco estéril. Mantener refrigerada hasta el examen.',
+      defaultInstructions: `RECOLECCIÓN DE MUESTRA DE ORINA:
+
+• RECOLECCIÓN: Primera orina de la mañana (más concentrada)
+• CONTENEDOR: Frasco estéril (proporcionado por laboratorio)
+• TIEMPO: Máximo 2 horas entre recolección y entrega
+• CONSERVACIÓN: Mantener refrigerada (NO congelar)
+• CANTIDAD: Mínimo 10ml para análisis completo
+• HIGIENE: Limpiar área genital antes de recolectar
+
+INCLUYE: Físico-químico, sedimento urinario, densidad.`,
       fastingRequired: false,
       urgency: 'normal'
     },
     {
       id: 'coprologico',
-      name: 'Examen Coprológico',
+      name: 'Examen Coprológico y Parasitológico',
       category: 'Parasitología',
-      defaultInstructions: 'Recolectar muestra fresca de deposición en frasco estéril. Traer dentro de 2 horas de recolectada.',
+      defaultInstructions: `RECOLECCIÓN DE MUESTRA FECAL:
+
+• FRESCURA: Muestra de menos de 2 horas
+• CANTIDAD: 2-3 cucharadas en frasco estéril
+• MÚLTIPLES MUESTRAS: 3 días consecutivos (recomendado)
+• CONSERVACIÓN: Temperatura ambiente, NO refrigerar
+• EVITAR: Muestras del suelo o contaminadas
+• MEDICAMENTOS: No desparasitar 7 días antes
+
+DETECTA: Parásitos, huevos, larvas, protozoarios, sangre oculta.`,
       fastingRequired: false,
       urgency: 'normal'
     },
     {
       id: 'radiografia',
-      name: 'Radiografía',
-      category: 'Imagenología',
-      defaultInstructions: 'No requiere ayuno. Mantener a la mascota tranquila durante el traslado.',
-      fastingRequired: false,
+      name: 'Radiografía Digital',
+      category: 'Diagnóstico por Imagen',
+      defaultInstructions: `PREPARACIÓN PARA RADIOGRAFÍA:
+
+• AYUNO: 8-12 horas (según región a examinar)
+• OBJETOS METÁLICOS: Retirar collar, tags, arnés
+• SEDACIÓN: Evaluar necesidad según temperamento
+• POSICIONAMIENTO: Requerirá quietud durante toma
+• ÁREAS: Especificar región exacta a radiografiar
+• ESTUDIOS PREVIOS: Traer radiografías anteriores si existen
+
+APLICACIONES: Fracturas, displasia, cuerpos extraños, tórax, abdomen.`,
+      fastingRequired: true,
       urgency: 'normal'
     },
     {
       id: 'ecografia',
-      name: 'Ecografía Abdominal',
-      category: 'Imagenología',
-      defaultInstructions: 'Ayuno de 12 horas. Vejiga llena (no orinar 2 horas antes). Mantener tranquila durante el traslado.',
+      name: 'Ecografía Abdominal Completa',
+      category: 'Diagnóstico por Imagen',
+      defaultInstructions: `PREPARACIÓN PARA ECOGRAFÍA ABDOMINAL:
+
+• AYUNO: 12 horas estricto
+• VEJIGA: Debe estar moderadamente llena
+• RASURADO: Área abdominal completa (realizado en consulta)
+• SEDACIÓN: Generalmente no necesaria
+• TRANQUILIDAD: Mantener relajado durante procedimiento
+• AGUA: 1-2 horas antes dar pequeña cantidad
+
+EVALÚA: Hígado, riñones, vesícula, bazo, intestinos, vejiga, próstata/útero.`,
       fastingRequired: true,
+      urgency: 'normal'
+    },
+    {
+      id: 'cultivo',
+      name: 'Cultivo Bacteriológico',
+      category: 'Microbiología',
+      defaultInstructions: `TOMA DE MUESTRA PARA CULTIVO:
+
+• ANTIBIÓTICOS: Suspender 48-72 horas antes (consultar veterinario)
+• ASEPSIA: Toma de muestra con técnica estéril
+• SITIOS: Especificar sitio exacto (oído, piel, orina, herida)
+• TRANSPORTE: Medio de cultivo apropiado
+• TIEMPO: Entregar inmediatamente al laboratorio
+• IDENTIFICACIÓN: Clara identificación del sitio
+
+INCLUYE: Identificación bacteriana, antibiograma, sensibilidad.`,
+      fastingRequired: false,
+      urgency: 'urgente'
+    },
+    {
+      id: 'citologia',
+      name: 'Citología',
+      category: 'Patología',
+      defaultInstructions: `PREPARACIÓN PARA CITOLOGÍA:
+
+• LESIÓN: No limpiar ni medicar 24 horas antes
+• ASPIRADO: Técnica de aspiración con aguja fina
+• IMPRESIÓN: Múltiples impresiones en portaobjetos
+• FIJACIÓN: Secado al aire, no fijar con alcohol
+• SITIOS: Especificar ubicación exacta de lesión
+• MÚLTIPLES: Varias muestras aumentan precisión
+
+EVALÚA: Células inflamatorias, neoplásicas, infecciosas.`,
+      fastingRequired: false,
+      urgency: 'normal'
+    },
+    {
+      id: 'histopatologia',
+      name: 'Histopatología',
+      category: 'Patología',
+      defaultInstructions: `TOMA DE BIOPSIA PARA HISTOPATOLOGÍA:
+
+• TÉCNICA ASÉPTICA: Instrumental estéril para biopsia
+• TAMAÑO: Muestra representativa del tejido
+• FIJACIÓN: Inmediata en formalina tamponada 10%
+• PROPORCIÓN: 1 parte tejido : 10 partes formalina
+• IDENTIFICACIÓN: Clara ubicación anatómica
+• REFRIGERACIÓN: NO congelar, temperatura ambiente
+
+TIEMPO RESULTADO: 7-10 días hábiles. Diagnóstico histológico definitivo.`,
+      fastingRequired: false,
+      urgency: 'normal'
+    },
+    {
+      id: 'otros',
+      name: 'Otros Exámenes',
+      category: 'Varios',
+      defaultInstructions: `EXÁMENES ESPECIALIZADOS:
+
+• ESPECIFICAR: Tipo de examen exacto solicitado
+• PREPARACIÓN: Según indicaciones específicas del examen
+• LABORATORIO: Confirmar disponibilidad en laboratorio
+• TIEMPO: Consultar tiempo de entrega de resultados
+• COSTO: Confirmar valor antes de realizar
+• MUESTRA: Seguir protocolo específico de recolección
+
+EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
+      fastingRequired: false,
       urgency: 'normal'
     }
   ];

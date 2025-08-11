@@ -4,32 +4,40 @@
 
 export const veterinarianConfig = {
   // INFORMACIÓN BÁSICA
-  name: 'Dra. María González',                    // Cambia por tu nombre completo
-  title: 'Médico Veterinario',                   // Tu título profesional
-  speciality: 'Medicina Interna y Cirugía',      // Tu especialidad
-  license: 'MV 12345',                           // Tu número de colegiatura
+  name: 'Dra. Alejandra Cautín Bastías',         // Nombre completo
+  title: 'Médica Veterinaria',                   // Título profesional
+  speciality: 'Medicina Preventiva e Integrativa', // Especialidad
+  license: 'MV - Colegio Médicos Veterinarios',  // Número de colegiatura
   
   // CONTACTO
-  phone: '+56 9 1234 5678',                      // Tu teléfono
-  email: 'contacto@vetcare.cl',                  // Tu email profesional
+  phone: '+56 9 7604 0797',                      // Teléfono principal
+  email: 'avmveterinaria@gmail.com',             // Email profesional
+  whatsappPhone: '+56 9 7604 0797',              // WhatsApp
   
   // CLÍNICA/CONSULTA
-  clinicName: 'VetCare Chile',                   // Nombre de tu clínica
-  address: 'Las Condes, Santiago',               // Dirección de tu consulta
+  clinicName: 'Atención Veterinaria a Domicilio', // Nombre del servicio
+  address: 'Santiago, Chile',                     // Ubicación general
+  serviceArea: 'Región Metropolitana',            // Área de cobertura
   
   // INFORMACIÓN PARA CERTIFICADOS
-  signature: 'Dra. María González',              // Nombre para firmas
-  professionalId: 'RUT: 12.345.678-9',         // Tu RUT profesional
+  signature: 'Dra. Alejandra Cautín Bastías',    // Nombre para firmas
+  professionalId: 'Médica Veterinaria Colegiada', // ID profesional
   
   // CONFIGURACIÓN ADICIONAL
-  workingHours: '09:00 - 18:00',                // Horario de atención
-  emergencyPhone: '+56 9 8765 4321',            // Teléfono de emergencias
-  website: 'www.vetcare.cl',                    // Tu sitio web
+  workingHours: 'Lunes a Viernes 9:00-18:00',   // Horario de atención
+  emergencyPhone: '+56 9 7604 0797',             // Teléfono de emergencias
+  website: 'AleVeterinaria.cl',                  // Sitio web
   
-  // REDES SOCIALES (OPCIONAL)
-  instagram: '@vetcare_chile',                   // Tu Instagram
-  facebook: 'VetCare Chile',                     // Tu Facebook
-  whatsapp: '+56912345678'                       // WhatsApp Business
+  // REDES SOCIALES
+  instagram: '@AleVeterinaria',                   // Instagram
+  facebook: 'Ale Veterinaria Santiago',          // Facebook
+  whatsapp: '+56976040797',                       // WhatsApp Business
+  
+  // INFORMACIÓN PROFESIONAL ESPECÍFICA
+  mission: 'Cuidar con calidez y respeto lo que más amas',
+  approach: 'Enfoque preventivo e integrativo, reduciendo ansiedad y miedo',
+  certification: 'Certificada en técnicas de reducción de ansiedad veterinaria',
+  philosophy: 'Acompaño desde el cuidado consciente, respetando la conexión entre tutor y animal'
 };
 
 // EJEMPLO DE CÓMO PERSONALIZAR:

@@ -60,20 +60,28 @@ export const chileanVaccines: Vaccine[] = [
     species: ["Canino"]
   },
   {
-    id: "nobivac-dhppi-l",
-    name: "Nobivac DHPPi+L",
-    laboratory: "MSD/Nobivac",
-    type: "Polivalente + Leptospira",
-    pathogens: ["Distemper", "Hepatitis", "Parvovirus", "Parainfluenza", "Leptospira"],
+    id: "nobivac-dh2pp",
+    name: "Nobivac DH2PP",
+    laboratory: "MSD/Nobivac", 
+    type: "Polivalente",
+    pathogens: ["Distemper", "Adenovirus tipo 2", "Parvovirus", "Parainfluenza"],
     species: ["Canino"]
   },
   {
-    id: "nobivac-dhppi-rl",
-    name: "Nobivac DHPPi+RL",
+    id: "nobivac-lepto-4",
+    name: "Nobivac Lepto 4",
     laboratory: "MSD/Nobivac",
-    type: "Polivalente + Rabia + Leptospira",
-    pathogens: ["Distemper", "Hepatitis", "Parvovirus", "Parainfluenza", "Rabia", "Leptospira"],
+    type: "Leptospirosis",
+    pathogens: ["Leptospira canicola", "Leptospira grippotyphosa", "Leptospira icterohaemorrhagiae", "Leptospira pomona"],
     species: ["Canino"]
+  },
+  {
+    id: "nobivac-rabies",
+    name: "Nobivac Rabia",
+    laboratory: "MSD/Nobivac",
+    type: "Antirrábica",
+    pathogens: ["Virus de la rabia"],
+    species: ["Canino", "Felino"]
   },
   {
     id: "nobivac-tricat-trio",
@@ -83,6 +91,24 @@ export const chileanVaccines: Vaccine[] = [
     pathogens: ["Rinotraqueitis viral felina", "Calicivirus felino", "Panleucopenia felina"],
     species: ["Felino"]
   },
+  
+  // Additional Chilean market vaccines
+  {
+    id: "merial-eurican-dhppi2-l",
+    name: "Eurican DHPPi2-L",
+    laboratory: "Merial",
+    type: "Polivalente + Leptospira",
+    pathogens: ["Distemper", "Hepatitis", "Parvovirus", "Parainfluenza", "Adenovirus tipo 2", "Leptospira"],
+    species: ["Canino"]
+  },
+  {
+    id: "virbac-canigen-dha2ppil",
+    name: "Canigen DHA2PPiL",
+    laboratory: "Virbac",
+    type: "Polivalente + Leptospira",
+    pathogens: ["Distemper", "Hepatitis", "Adenovirus tipo 2", "Parvovirus", "Parainfluenza", "Leptospira"],
+    species: ["Canino"]
+  },
   {
     id: "nobivac-felv",
     name: "Nobivac FeLV",
@@ -90,14 +116,6 @@ export const chileanVaccines: Vaccine[] = [
     type: "Leucemia felina",
     pathogens: ["Leucemia felina"],
     species: ["Felino"]
-  },
-  {
-    id: "nobivac-rabies",
-    name: "Nobivac Rabies",
-    laboratory: "MSD/Nobivac",
-    type: "Antirrábica",
-    pathogens: ["Rabia"],
-    species: ["Canino", "Felino"]
   },
   {
     id: "nobivac-puppy-dp",
@@ -122,19 +140,17 @@ export const getVaccineById = (id: string): Vaccine | undefined => {
 };
 
 export const getVaccinesBySpecies = (species: string): Vaccine[] => {
-  return chileanVaccines.filter(vaccine => vaccine.species.includes(species));
-};
-
-export const getVaccinesByLaboratory = (laboratory: string): Vaccine[] => {
-  return chileanVaccines.filter(vaccine => vaccine.laboratory === laboratory);
-};
-
-export const searchVaccines = (query: string): Vaccine[] => {
-  const lowerQuery = query.toLowerCase();
   return chileanVaccines.filter(vaccine => 
-    vaccine.name.toLowerCase().includes(lowerQuery) ||
-    vaccine.laboratory.toLowerCase().includes(lowerQuery) ||
-    vaccine.type.toLowerCase().includes(lowerQuery) ||
-    vaccine.pathogens.some(pathogen => pathogen.toLowerCase().includes(lowerQuery))
+    vaccine.species.includes(species)
   );
+};
+
+export const getLaboratories = (): string[] => {
+  const labs = new Set(chileanVaccines.map(vaccine => vaccine.laboratory));
+  return Array.from(labs).sort();
+};
+
+export const getVaccineTypes = (): string[] => {
+  const types = new Set(chileanVaccines.map(vaccine => vaccine.type));
+  return Array.from(types).sort();
 };
