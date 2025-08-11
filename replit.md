@@ -1,6 +1,6 @@
 # Overview
 
-VetCare Chile is a modern web application for veterinary home services in Santiago, Chile. The platform provides a comprehensive solution for managing veterinary consultations, medical records, vaccinations, and certificates through three main interfaces: a public landing page, a professional portal for veterinarians, and a client portal for pet owners. The application combines a React-based frontend with a Node.js/Express backend, utilizing Drizzle ORM for database management and Firebase for authentication and file storage.
+VetCare Chile is a modern web application for veterinary home services in Santiago, Chile. The platform provides a comprehensive solution for managing veterinary consultations, medical records, vaccinations, certificates, and exam requests through three main interfaces: a public landing page, a professional portal for veterinarians, and a client portal for pet owners. The application combines a React-based frontend with a Node.js/Express backend, utilizing Drizzle ORM for database management and Firebase for authentication and file storage.
 
 # User Preferences
 
@@ -21,7 +21,7 @@ The frontend is built using React with TypeScript and follows a component-based 
 
 The application uses a modular structure with three main views:
 - Public homepage with service information and booking integration
-- Professional portal for veterinarians to manage patient records
+- Professional portal for veterinarians to manage patient records and generate exam orders
 - Owner portal for pet owners to view their pets' medical history
 
 ## Backend Architecture
@@ -85,6 +85,15 @@ The application implements a cohesive design system:
 - **Calendly**: Appointment booking integration for the public website
 - **Chilean Vaccine Database**: Autocomplete functionality for local vaccine brands (Zoetis, MSD/Nobivac)
 - **RUT Validation**: Chilean tax ID validation with modulo 11 algorithm
-- **PDF Generation**: Document generation for certificates and prescriptions
+- **PDF Generation**: Document generation for certificates, prescriptions, and exam orders
+- **Exam Request System**: Automated generation of medical orders with patient-specific instructions
+
+## Recent Changes (December 2024)
+
+- Added comprehensive exam request functionality to professional portal
+- Implemented automatic instruction generation for 6 exam types (Hemograma, Bioquímica, Orina, Coprológico, Radiografía, Ecografía)
+- Created tabbed navigation system in professional portal with Dashboard, Patients, Exams, and Certificates sections
+- Enhanced demo access section on homepage with clear credentials display
+- Integrated exam urgency levels (Normal, Urgent, Emergency) with automatic PDF order generation
 
 The architecture supports future integrations for WhatsApp notifications, email alerts, and medical tracking charts while maintaining a clean separation of concerns between the frontend, backend, and external services.
