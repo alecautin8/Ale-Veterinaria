@@ -25,19 +25,32 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type }) => {
     setLoading(true);
 
     try {
-      await signInUser(email, password);
-      toast({
-        title: "Acceso exitoso",
-        description: `Bienvenido al portal ${type === 'tutor' ? 'del tutor' : 'profesional'}`,
-      });
-      
-      // Redirect to appropriate portal
-      setLocation(type === 'tutor' ? '/portal/tutor' : '/portal/profesional');
-      onClose();
+      // Demo mode - allow access with demo credentials or skip Firebase for testing
+      if (email === 'demo@veterinario.com' || email === 'demo@tutor.com') {
+        toast({
+          title: "Modo demostración activado",
+          description: `Accediendo al portal ${type === 'tutor' ? 'del tutor' : 'profesional'} en modo demo`,
+        });
+        
+        // Redirect to appropriate portal
+        setLocation(type === 'tutor' ? '/portal/tutor' : '/portal/profesional');
+        onClose();
+      } else {
+        // Try Firebase authentication
+        await signInUser(email, password);
+        toast({
+          title: "Acceso exitoso",
+          description: `Bienvenido al portal ${type === 'tutor' ? 'del tutor' : 'profesional'}`,
+        });
+        
+        // Redirect to appropriate portal
+        setLocation(type === 'tutor' ? '/portal/tutor' : '/portal/profesional');
+        onClose();
+      }
     } catch (error: any) {
       toast({
         title: "Error de acceso",
-        description: "Email o contraseña incorrectos",
+        description: "Email o contraseña incorrectos. Prueba con demo@veterinario.com para modo demostración",
         variant: "destructive"
       });
     } finally {
@@ -62,6 +75,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type }) => {
             </DialogTitle>
             <p className="text-gray-600 font-lato mt-2">
               {type === 'tutor' ? 'Accede al historial de tus mascotas' : 'Gestiona fichas clínicas y certificados'}
+            </p>
+            <p className="text-sm text-turquoise font-lato mt-1">
+              Para demostración, usa: demo@{type === 'tutor' ? 'tutor' : 'veterinario'}.com
             </p>
           </div>
         </DialogHeader>

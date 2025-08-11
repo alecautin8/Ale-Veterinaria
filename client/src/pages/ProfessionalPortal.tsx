@@ -23,20 +23,42 @@ const ProfessionalPortal = () => {
   });
 
   const [patientData, setPatientData] = useState({
-    name: '',
-    species: '',
-    breed: '',
-    weight: '',
-    consultation: ''
+    name: 'Max',
+    species: 'Canino',
+    breed: 'Yorkshire Terrier',
+    weight: '3.5 kg',
+    consultation: 'Control rutinario - paciente en excelente estado de salud.'
   });
 
+  const [showPatientData, setShowPatientData] = useState(true);
+
   const [vaccineData, setVaccineData] = useState({
-    vaccineId: '',
-    laboratory: '',
-    batch: '',
-    date: '',
-    pathogens: [] as string[]
+    vaccineId: 'zoetis-vanguard-plus5',
+    laboratory: 'Zoetis',
+    batch: 'VAG123ABC',
+    date: new Date().toISOString().split('T')[0],
+    pathogens: ['Distemper', 'Adenovirus tipo 1', 'Adenovirus tipo 2', 'Parainfluenza', 'Parvovirus']
   });
+
+  // Mock data for demonstration
+  const [patientHistory] = useState([
+    {
+      id: '001',
+      date: '15/12/2023',
+      type: 'Vacunación',
+      vaccine: 'Vanguard Plus 5 - Zoetis',
+      doctor: 'Dra. María González',
+      notes: 'Vacuna aplicada sin complicaciones'
+    },
+    {
+      id: '002', 
+      date: '10/11/2023',
+      type: 'Consulta',
+      description: 'Control rutinario',
+      doctor: 'Dra. María González',
+      notes: 'Paciente en excelente estado'
+    }
+  ]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -105,15 +127,49 @@ const ProfessionalPortal = () => {
     <div className="min-h-screen bg-warmbeige pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-poppins font-bold text-darkgray mb-2">Portal Profesional</h1>
-            <p className="text-gray-600 font-lato">Gestión de fichas clínicas y certificados</p>
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-poppins font-bold text-darkgray mb-2">Portal Profesional</h1>
+              <p className="text-gray-600 font-lato">Gestión de fichas clínicas y certificados - Dra. María González</p>
+            </div>
+            <Button onClick={() => setLocation('/')} variant="outline">
+              <i className="fas fa-home mr-2"></i>
+              Volver al Inicio
+            </Button>
           </div>
-          <Button onClick={() => setLocation('/')} variant="outline">
-            <i className="fas fa-home mr-2"></i>
-            Volver al Inicio
-          </Button>
+
+          {/* Statistics Dashboard */}
+          <div className="grid md:grid-cols-4 gap-6 mb-8">
+            <Card className="bg-gradient-to-br from-mint to-turquoise text-white">
+              <CardContent className="p-6 text-center">
+                <i className="fas fa-paw text-3xl mb-3"></i>
+                <div className="text-2xl font-poppins font-bold">24</div>
+                <div className="text-sm opacity-90">Pacientes Activos</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-lavender to-palerose text-darkgray">
+              <CardContent className="p-6 text-center">
+                <i className="fas fa-syringe text-3xl mb-3"></i>
+                <div className="text-2xl font-poppins font-bold">8</div>
+                <div className="text-sm opacity-70">Vacunas Hoy</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-turquoise to-mint text-white">
+              <CardContent className="p-6 text-center">
+                <i className="fas fa-certificate text-3xl mb-3"></i>
+                <div className="text-2xl font-poppins font-bold">12</div>
+                <div className="text-sm opacity-90">Certificados Mes</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-palerose to-lavender text-darkgray">
+              <CardContent className="p-6 text-center">
+                <i className="fas fa-calendar-check text-3xl mb-3"></i>
+                <div className="text-2xl font-poppins font-bold">5</div>
+                <div className="text-sm opacity-70">Citas Pendientes</div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -281,33 +337,115 @@ const ProfessionalPortal = () => {
           </Card>
         </div>
 
+        {/* Patient History */}
+        {showPatientData && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="font-poppins flex items-center">
+                <i className="fas fa-history text-mint mr-2"></i>
+                Historial Médico - {patientData.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {patientHistory.map((record) => (
+                  <div key={record.id} className="border-l-4 border-mint pl-4 py-3 bg-white/50 rounded-r-lg">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h4 className="font-poppins font-medium text-darkgray flex items-center">
+                          <i className={`${record.type === 'Vacunación' ? 'fas fa-syringe text-lavender' : 'fas fa-stethoscope text-turquoise'} mr-2`}></i>
+                          {record.type}
+                        </h4>
+                        <p className="text-gray-600 font-lato">
+                          {record.vaccine || record.description}
+                        </p>
+                        <p className="text-sm text-gray-500 font-lato">{record.date} - {record.doctor}</p>
+                        <p className="text-sm text-gray-600 font-lato italic">{record.notes}</p>
+                      </div>
+                      <Button 
+                        size="sm"
+                        className="bg-palerose text-darkgray hover:bg-palerose/80"
+                      >
+                        <i className="fas fa-download mr-1"></i>
+                        PDF
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* PDF Generation Tools */}
-        <Card>
+        <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="font-poppins">Generar Documentos</CardTitle>
+            <CardTitle className="font-poppins flex items-center">
+              <i className="fas fa-file-pdf text-turquoise mr-2"></i>
+              Generar Documentos
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <Button 
                 onClick={() => generateCertificate('salud')}
-                className="bg-mint text-darkgray hover:bg-mint/80"
+                className="bg-mint text-darkgray hover:bg-mint/80 p-6 h-auto flex flex-col items-center space-y-2"
               >
-                <i className="fas fa-certificate mr-2"></i>
-                Certificado de Salud
+                <i className="fas fa-certificate text-3xl"></i>
+                <div>
+                  <div className="font-semibold">Certificado de Salud</div>
+                  <div className="text-sm opacity-80">Para consultas veterinarias</div>
+                </div>
               </Button>
               <Button 
                 onClick={() => generateCertificate('exportación')}
-                className="bg-lavender text-darkgray hover:bg-lavender/80"
+                className="bg-lavender text-darkgray hover:bg-lavender/80 p-6 h-auto flex flex-col items-center space-y-2"
               >
-                <i className="fas fa-plane mr-2"></i>
-                Certificado de Exportación
+                <i className="fas fa-plane text-3xl"></i>
+                <div>
+                  <div className="font-semibold">Certificado de Exportación</div>
+                  <div className="text-sm opacity-80">Con anexos de vacunas</div>
+                </div>
               </Button>
               <Button 
                 onClick={() => generateCertificate('receta')}
-                className="bg-turquoise text-darkgray hover:bg-turquoise/80"
+                className="bg-turquoise text-darkgray hover:bg-turquoise/80 p-6 h-auto flex flex-col items-center space-y-2"
               >
-                <i className="fas fa-prescription mr-2"></i>
-                Receta
+                <i className="fas fa-prescription text-3xl"></i>
+                <div>
+                  <div className="font-semibold">Receta Médica</div>
+                  <div className="text-sm opacity-80">Prescripciones y tratamientos</div>
+                </div>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-poppins flex items-center">
+              <i className="fas fa-bolt text-palerose mr-2"></i>
+              Acciones Rápidas
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Button variant="outline" className="p-4 h-auto flex flex-col items-center space-y-2">
+                <i className="fas fa-plus-circle text-mint text-2xl"></i>
+                <span className="text-sm">Nueva Consulta</span>
+              </Button>
+              <Button variant="outline" className="p-4 h-auto flex flex-col items-center space-y-2">
+                <i className="fas fa-syringe text-lavender text-2xl"></i>
+                <span className="text-sm">Registrar Vacuna</span>
+              </Button>
+              <Button variant="outline" className="p-4 h-auto flex flex-col items-center space-y-2">
+                <i className="fas fa-pills text-turquoise text-2xl"></i>
+                <span className="text-sm">Desparasitación</span>
+              </Button>
+              <Button variant="outline" className="p-4 h-auto flex flex-col items-center space-y-2">
+                <i className="fas fa-camera text-palerose text-2xl"></i>
+                <span className="text-sm">Subir Imagen</span>
               </Button>
             </div>
           </CardContent>

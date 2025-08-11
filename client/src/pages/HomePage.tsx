@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -6,8 +7,16 @@ import Booking from '@/components/Booking';
 import FAQ from '@/components/FAQ';
 import Resources from '@/components/Resources';
 import Contact from '@/components/Contact';
+import LoginModal from '@/components/LoginModal';
 
 const HomePage = () => {
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [loginType, setLoginType] = useState<'tutor' | 'profesional'>('tutor');
+
+  const showLoginModal = (type: 'tutor' | 'profesional') => {
+    setLoginType(type);
+    setLoginModalOpen(true);
+  };
   const coverageAreas = [
     { name: "Las Condes", color: "text-mint" },
     { name: "Vitacura", color: "text-lavender" },
@@ -45,6 +54,61 @@ const HomePage = () => {
       </section>
 
       <About />
+      
+      {/* Demo Access Section */}
+      <section className="py-16 bg-gradient-to-r from-mint to-turquoise">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-poppins font-bold text-white mb-6">Acceso a Portales - Demostración</h2>
+          <p className="text-xl text-white font-lato mb-8">
+            Explora las funcionalidades completas de nuestros portales usando las credenciales de demostración
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-3xl shadow-2xl">
+              <i className="fas fa-user-md text-4xl text-mint mb-4"></i>
+              <h3 className="text-2xl font-poppins font-semibold text-darkgray mb-4">Portal Profesional</h3>
+              <p className="text-gray-600 font-lato mb-4">
+                Gestión completa de fichas clínicas, vacunación, certificados y más
+              </p>
+              <div className="bg-mint/10 p-4 rounded-lg mb-4">
+                <p className="text-sm font-mono text-darkgray">
+                  <strong>Email:</strong> demo@veterinario.com<br/>
+                  <strong>Contraseña:</strong> cualquier texto
+                </p>
+              </div>
+              <button 
+                onClick={() => showLoginModal('profesional')}
+                className="bg-mint text-darkgray px-6 py-3 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all w-full"
+              >
+                <i className="fas fa-sign-in-alt mr-2"></i>
+                Acceder al Portal
+              </button>
+            </div>
+            
+            <div className="bg-white p-8 rounded-3xl shadow-2xl">
+              <i className="fas fa-heart text-4xl text-lavender mb-4"></i>
+              <h3 className="text-2xl font-poppins font-semibold text-darkgray mb-4">Portal del Tutor</h3>
+              <p className="text-gray-600 font-lato mb-4">
+                Historial médico completo de tus mascotas y descarga de documentos
+              </p>
+              <div className="bg-lavender/10 p-4 rounded-lg mb-4">
+                <p className="text-sm font-mono text-darkgray">
+                  <strong>Email:</strong> demo@tutor.com<br/>
+                  <strong>Contraseña:</strong> cualquier texto
+                </p>
+              </div>
+              <button 
+                onClick={() => showLoginModal('tutor')}
+                className="bg-lavender text-darkgray px-6 py-3 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all w-full"
+              >
+                <i className="fas fa-sign-in-alt mr-2"></i>
+                Acceder al Portal
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Booking />
       <FAQ />
       <Resources />
@@ -89,6 +153,12 @@ const HomePage = () => {
           </div>
         </div>
       </footer>
+
+      <LoginModal 
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        type={loginType}
+      />
     </div>
   );
 };
