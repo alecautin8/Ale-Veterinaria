@@ -16,6 +16,8 @@ const ProfessionalPortal = () => {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   
+  const [activeTab, setActiveTab] = useState('dashboard');
+  
   const [searchData, setSearchData] = useState({
     recordNumber: '',
     name: '',
