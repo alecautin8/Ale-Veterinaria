@@ -17,6 +17,18 @@ const ProfessionalPortal = () => {
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  // CONFIGURACIÓN PROFESIONAL - Personaliza aquí tu información
+  const veterinarianInfo = {
+    name: 'Dra. María González',
+    title: 'Médico Veterinario',
+    speciality: 'Medicina Interna y Cirugía',
+    license: 'MV 12345',
+    phone: '+56 9 1234 5678',
+    email: 'contacto@vetcare.cl',
+    clinicName: 'VetCare Chile',
+    address: 'Las Condes, Santiago'
+  };
   
   const [searchData, setSearchData] = useState({
     recordNumber: '',
@@ -235,7 +247,8 @@ const ProfessionalPortal = () => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h1 className="text-3xl font-poppins font-bold text-darkgray mb-2">Portal Profesional</h1>
-              <p className="text-gray-600 font-lato">Gestión de fichas clínicas y certificados - Dra. María González</p>
+              <p className="text-gray-600 font-lato">Gestión de fichas clínicas y certificados - {veterinarianInfo.name}</p>
+              <p className="text-sm text-gray-500 font-lato">{veterinarianInfo.title} • {veterinarianInfo.speciality} • {veterinarianInfo.license}</p>
             </div>
             <Button onClick={() => setLocation('/')} variant="outline">
               <i className="fas fa-home mr-2"></i>
@@ -323,6 +336,17 @@ const ProfessionalPortal = () => {
               >
                 <i className="fas fa-certificate mr-2"></i>
                 Certificados
+              </button>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  activeTab === 'profile' 
+                    ? 'border-mint text-mint' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-user-md mr-2"></i>
+                Mi Perfil
               </button>
             </nav>
           </div>
@@ -802,6 +826,153 @@ const ProfessionalPortal = () => {
                       <i className="fas fa-download mr-1"></i>
                       Descargar
                     </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Profile Tab */}
+        {activeTab === 'profile' && (
+          <div>
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="font-poppins flex items-center">
+                  <i className="fas fa-user-md text-mint mr-2"></i>
+                  Mi Información Profesional
+                </CardTitle>
+                <p className="text-gray-600 font-lato">Personaliza tu información para que aparezca en certificados y documentos</p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="vetName" className="text-base font-semibold">Nombre Completo</Label>
+                    <Input
+                      id="vetName"
+                      defaultValue={veterinarianInfo.name}
+                      placeholder="Dr./Dra. Tu Nombre"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="vetTitle" className="text-base font-semibold">Título Profesional</Label>
+                    <Input
+                      id="vetTitle"
+                      defaultValue={veterinarianInfo.title}
+                      placeholder="Médico Veterinario"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="vetSpeciality" className="text-base font-semibold">Especialidad</Label>
+                    <Input
+                      id="vetSpeciality"
+                      defaultValue={veterinarianInfo.speciality}
+                      placeholder="Medicina Interna, Cirugía, etc."
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="vetLicense" className="text-base font-semibold">Número de Colegiatura</Label>
+                    <Input
+                      id="vetLicense"
+                      defaultValue={veterinarianInfo.license}
+                      placeholder="MV 12345"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="vetPhone" className="text-base font-semibold">Teléfono</Label>
+                    <Input
+                      id="vetPhone"
+                      defaultValue={veterinarianInfo.phone}
+                      placeholder="+56 9 1234 5678"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="vetEmail" className="text-base font-semibold">Email</Label>
+                    <Input
+                      id="vetEmail"
+                      defaultValue={veterinarianInfo.email}
+                      placeholder="tu@email.cl"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="clinicName" className="text-base font-semibold">Nombre de la Clínica</Label>
+                    <Input
+                      id="clinicName"
+                      defaultValue={veterinarianInfo.clinicName}
+                      placeholder="Nombre de tu clínica"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="clinicAddress" className="text-base font-semibold">Dirección</Label>
+                    <Input
+                      id="clinicAddress"
+                      defaultValue={veterinarianInfo.address}
+                      placeholder="Comuna, Ciudad"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h4 className="font-semibold text-darkgray mb-1">Actualizar Información</h4>
+                      <p className="text-sm text-gray-600">Los cambios se aplicarán a todos los documentos generados</p>
+                    </div>
+                    <Button className="bg-mint text-darkgray hover:bg-mint/80">
+                      <i className="fas fa-save mr-2"></i>
+                      Guardar Cambios
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Instructions Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-poppins flex items-center">
+                  <i className="fas fa-info-circle text-turquoise mr-2"></i>
+                  Cómo Personalizar tu Portal
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-mint/10 rounded-lg">
+                    <h4 className="font-semibold text-darkgray mb-2">
+                      <i className="fas fa-edit mr-2"></i>
+                      Opción 1: Editar directamente en el código
+                    </h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Para cambios permanentes, edita el archivo <code className="bg-gray-200 px-1 rounded">client/src/pages/ProfessionalPortal.tsx</code>
+                    </p>
+                    <div className="bg-gray-800 text-green-400 p-3 rounded text-xs font-mono">
+                      <div>// CONFIGURACIÓN PROFESIONAL - Línea 24</div>
+                      <div>const veterinarianInfo = {'{'}...</div>
+                      <div>&nbsp;&nbsp;name: 'Tu Nombre Aquí',</div>
+                      <div>&nbsp;&nbsp;title: 'Tu Título',</div>
+                      <div>&nbsp;&nbsp;speciality: 'Tu Especialidad',</div>
+                      <div>&nbsp;&nbsp;// ... resto de campos</div>
+                      <div>{'};'}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-lavender/10 rounded-lg">
+                    <h4 className="font-semibold text-darkgray mb-2">
+                      <i className="fas fa-database mr-2"></i>
+                      Opción 2: Conexión con base de datos (Próximamente)
+                    </h4>
+                    <p className="text-sm text-gray-700">
+                      Los cambios en este formulario se podrán guardar automáticamente en la base de datos
+                      para persistir entre sesiones.
+                    </p>
                   </div>
                 </div>
               </CardContent>
