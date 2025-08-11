@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLocation } from 'wouter';
 import { validateRut, formatRut } from '@/lib/rutValidator';
 import { getVaccinesBySpecies, chileanVaccines } from '@/lib/vaccines';
+import { veterinarianConfig } from '@/config/veterinarian';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,17 +19,8 @@ const ProfessionalPortal = () => {
   
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // CONFIGURACIÓN PROFESIONAL - Personaliza aquí tu información
-  const veterinarianInfo = {
-    name: 'Dra. María González',
-    title: 'Médico Veterinario',
-    speciality: 'Medicina Interna y Cirugía',
-    license: 'MV 12345',
-    phone: '+56 9 1234 5678',
-    email: 'contacto@vetcare.cl',
-    clinicName: 'VetCare Chile',
-    address: 'Las Condes, Santiago'
-  };
+  // Usar configuración profesional desde archivo separado
+  const veterinarianInfo = veterinarianConfig;
   
   const [searchData, setSearchData] = useState({
     recordNumber: '',
@@ -951,15 +943,19 @@ const ProfessionalPortal = () => {
                       Opción 1: Editar directamente en el código
                     </h4>
                     <p className="text-sm text-gray-700 mb-2">
-                      Para cambios permanentes, edita el archivo <code className="bg-gray-200 px-1 rounded">client/src/pages/ProfessionalPortal.tsx</code>
+                      Para cambios permanentes, edita el archivo <code className="bg-gray-200 px-1 rounded">client/src/config/veterinarian.ts</code>
                     </p>
                     <div className="bg-gray-800 text-green-400 p-3 rounded text-xs font-mono">
-                      <div>// CONFIGURACIÓN PROFESIONAL - Línea 24</div>
-                      <div>const veterinarianInfo = {'{'}...</div>
+                      <div>// CONFIGURACIÓN PROFESIONAL</div>
+                      <div>export const veterinarianConfig = {'{'}...</div>
                       <div>&nbsp;&nbsp;name: 'Tu Nombre Aquí',</div>
-                      <div>&nbsp;&nbsp;title: 'Tu Título',</div>
+                      <div>&nbsp;&nbsp;title: 'Tu Título Profesional',</div>
                       <div>&nbsp;&nbsp;speciality: 'Tu Especialidad',</div>
-                      <div>&nbsp;&nbsp;// ... resto de campos</div>
+                      <div>&nbsp;&nbsp;license: 'Tu Número de Colegiatura',</div>
+                      <div>&nbsp;&nbsp;phone: 'Tu Teléfono',</div>
+                      <div>&nbsp;&nbsp;email: 'Tu Email',</div>
+                      <div>&nbsp;&nbsp;clinicName: 'Nombre de tu Clínica',</div>
+                      <div>&nbsp;&nbsp;address: 'Tu Dirección'</div>
                       <div>{'};'}</div>
                     </div>
                   </div>
