@@ -1,0 +1,43 @@
+Crea desde cero el código completo y funcional de una página web moderna para ofrecer servicios veterinarios a domicilio en Chile, con diseño atractivo, responsive y basado en Tailwind CSS.
+El sistema debe incluir:
+1. Página pública (vista inicial)
+
+Imagen principal: Yorkshire Terrier feliz con fondo claro o ambiente hogareño (/assets/yorkie.jpg o desde Firebase Storage).
+Título destacado: “Atención Veterinaria a Domicilio con Amor y Profesionalismo”.
+Secciones: Descripción de servicios, Zonas de cobertura, Métodos de pago, Botón “Agendar hora” integrado con Calendly.
+Paleta de colores: menta, lavanda, turquesa claro, rosa pálido, fondo beige.
+Tipografía: Poppins para títulos y Lato para textos.
+2. Portal Profesional (veterinario)
+Login con Firebase Auth.
+Ver y editar fichas clínicas.
+Registrar vacunas, desparasitaciones, consultas y exámenes.
+Subir y visualizar PDFs e imágenes.
+Generar certificados automáticos (incluyendo de exportación con anexos de vacunas y desparasitación) y recetas en PDF con html2pdf.
+Mantener toda la información previa con merge: true.
+3. Portal del Tutor
+Login con Firebase Auth.
+Mostrar solo las mascotas asociadas a su cuenta.
+Ver historial de vacunas, desparasitaciones, consultas, exámenes, certificados y recetas.
+Descargar cualquier documento en PDF.
+Diseño amigable, con íconos e interfaz cálida.
+4. Autocompletado de vacunas (archivo JS externo)
+Lista de vacunas disponibles en Chile (Zoetis y MSD/Nobivac).
+Al seleccionar una, rellenar automáticamente tipo, laboratorio y patógenos cubiertos.
+Mostrar esta información también en el certificado.
+5. Buscador inteligente
+Buscar por número de ficha, nombre (sin tildes, insensible a mayúsculas), y RUT (con formato automático puntos y guion).
+Validación de RUT con módulo 11.
+6. Validaciones y compatibilidad
+Fechas no futuras.
+Campos requeridos obligatorios.
+Botones de descarga PDF para todos los documentos.
+7. Base técnica
+Tailwind CSS para estilos.
+Firebase Auth, Firestore y Storage para backend.
+Código modular y comentado, dividido en vistas: pública, tutor y profesional.
+Preparado para futura integración de alertas por WhatsApp/mail y gráficos de seguimiento (por ejemplo, creatinina).
+Importante:
+Optimizar para carga rápida.
+Diseñar con enfoque profesional y emocional.
+Mantener retrocompatibilidad con registros previos en Firebase.
+Genera el proyecto completo en HTML, CSS y JavaScript (con módulos separados si es necesario), listo para subir a Firebase Hosting.
