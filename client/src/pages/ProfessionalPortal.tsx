@@ -997,17 +997,7 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                     </div>
                   </div>
                   
-                  <div className="mt-4 grid md:grid-cols-2 gap-4">
-                    <div className="bg-amber-50 p-3 rounded border-l-4 border-amber-400">
-                      <Label className="font-medium text-amber-800">Nutrición:</Label>
-                      <p className="text-sm text-amber-700">{bmiResult.nutritionalAdvice}</p>
-                    </div>
-                    
-                    <div className="bg-cyan-50 p-3 rounded border-l-4 border-cyan-400">
-                      <Label className="font-medium text-cyan-800">Ejercicio:</Label>
-                      <p className="text-sm text-cyan-700">{bmiResult.exerciseRecommendation}</p>
-                    </div>
-                  </div>
+
                 </div>
               )}
             </div>

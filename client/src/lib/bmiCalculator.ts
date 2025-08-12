@@ -29,7 +29,7 @@ export class VeterinaryBMICalculator {
     let classification = '';
     let recommendation = '';
     
-    // FBMI = (Peso corporal en kg / (Longitud de pata trasera en cm)²) × 10000
+    // FBMI Felino = (Peso corporal en kg / (Longitud de pata trasera en cm)²) × 10000
     if (legLength && legLength > 0) {
       fbmi = (weight / Math.pow(legLength, 2)) * 10000;
       
@@ -58,8 +58,6 @@ export class VeterinaryBMICalculator {
     
     const bcsInterpretation = this.interpretBCS(bcs || 5);
     const idealWeightRange = this.calculateIdealWeightRange(weight, bcs || 5);
-    const nutritionalAdvice = this.getFelineNutritionalAdvice(fbmi, bcs);
-    const exerciseRecommendation = this.getFelineExerciseRecommendation(fbmi, bcs);
     
     return {
       fbmi,
@@ -67,8 +65,8 @@ export class VeterinaryBMICalculator {
       recommendation,
       bcsInterpretation,
       idealWeightRange,
-      nutritionalAdvice,
-      exerciseRecommendation
+      nutritionalAdvice: '',
+      exerciseRecommendation: ''
     };
   }
   
@@ -80,8 +78,7 @@ export class VeterinaryBMICalculator {
     let classification = '';
     let recommendation = '';
     
-    // IMC Canino = Peso (kg) / ((Longitud corporal en cm / 100)²)
-    // Alternativamente: usar circunferencia torácica para mayor precisión
+    // IMC Canino (Mawby) = Peso (kg) / ((Longitud corporal en cm / 100)²)
     if (bodyLength && bodyLength > 0) {
       const lengthInMeters = bodyLength / 100;
       bmi = weight / Math.pow(lengthInMeters, 2);
@@ -111,8 +108,6 @@ export class VeterinaryBMICalculator {
     
     const bcsInterpretation = this.interpretBCS(bcs || 5);
     const idealWeightRange = this.calculateIdealWeightRange(weight, bcs || 5);
-    const nutritionalAdvice = this.getCanineNutritionalAdvice(bmi, bcs);
-    const exerciseRecommendation = this.getCanineExerciseRecommendation(bmi, bcs);
     
     return {
       bmi,
@@ -120,8 +115,8 @@ export class VeterinaryBMICalculator {
       recommendation,
       bcsInterpretation,
       idealWeightRange,
-      nutritionalAdvice,
-      exerciseRecommendation
+      nutritionalAdvice: '',
+      exerciseRecommendation: ''
     };
   }
   
@@ -188,58 +183,7 @@ export class VeterinaryBMICalculator {
     
     return `${lowerRange.toFixed(1)} - ${upperRange.toFixed(1)} kg`;
   }
-  
-  // Consejos nutricionales específicos para felinos
-  private static getFelineNutritionalAdvice(fbmi?: number, bcs?: number): string {
-    if (!fbmi && (!bcs || bcs === 5)) {
-      return 'Mantener dieta balanceada para gatos adultos. 200-300 kcal/día según actividad.';
-    }
-    
-    if ((fbmi && fbmi < 20) || (bcs && bcs <= 3)) {
-      return 'Dieta hipercalórica: alimento premium para gatos, 350-400 kcal/día. Suplementos nutricionales si es necesario.';
-    } else if ((fbmi && fbmi > 30) || (bcs && bcs >= 7)) {
-      return 'Dieta hipocalórica: alimento light para gatos, 150-200 kcal/día. Evitar snacks. Comidas fraccionadas.';
-    } else {
-      return 'Dieta de mantenimiento: alimento balanceado para gatos adultos, 250-300 kcal/día según actividad.';
-    }
-  }
-  
-  // Consejos nutricionales específicos para caninos
-  private static getCanineNutritionalAdvice(bmi?: number, bcs?: number): string {
-    if (!bmi && (!bcs || bcs === 5)) {
-      return 'Mantener dieta balanceada según tamaño. Razas pequeñas: 200-400 kcal/día, medianas: 600-1000 kcal/día, grandes: 1200-2000 kcal/día.';
-    }
-    
-    if ((bmi && bmi < 15) || (bcs && bcs <= 3)) {
-      return 'Dieta hipercalórica: incrementar 20-30% las calorías. Alimento premium, comidas frecuentes. Suplementos si es necesario.';
-    } else if ((bmi && bmi > 25) || (bcs && bcs >= 7)) {
-      return 'Dieta hipocalórica: reducir 15-25% las calorías. Alimento light, eliminar snacks, comidas controladas.';
-    } else {
-      return 'Dieta de mantenimiento: alimento balanceado según edad y actividad. Ajustar según nivel de ejercicio.';
-    }
-  }
-  
-  // Recomendaciones de ejercicio para felinos
-  private static getFelineExerciseRecommendation(fbmi?: number, bcs?: number): string {
-    if ((fbmi && fbmi > 30) || (bcs && bcs >= 7)) {
-      return 'Ejercicio moderado: 15-20 min de juego activo diario. Juguetes interactivos, láser, cañas de pescar.';
-    } else if ((fbmi && fbmi < 20) || (bcs && bcs <= 3)) {
-      return 'Ejercicio suave: estimular actividad lúdica sin sobreexigir. Enfoque en recuperación nutricional.';
-    } else {
-      return 'Ejercicio regular: 10-15 min de juego activo diario. Mantener instintos de caza activos.';
-    }
-  }
-  
-  // Recomendaciones de ejercicio para caninos
-  private static getCanineExerciseRecommendation(bmi?: number, bcs?: number): string {
-    if ((bmi && bmi > 25) || (bcs && bcs >= 7)) {
-      return 'Ejercicio intensivo: 30-60 min diarios. Caminatas largas, natación si es posible. Incrementar gradualmente.';
-    } else if ((bmi && bmi < 15) || (bcs && bcs <= 3)) {
-      return 'Ejercicio controlado: paseos cortos y suaves. Evitar sobreexigir hasta recuperar peso ideal.';
-    } else {
-      return 'Ejercicio regular: 30-45 min diarios según raza. Paseos, juegos, actividades según energía del perro.';
-    }
-  }
+
   
   // Función principal para calcular según especie
   static calculateBMI(params: BMICalculationParams): BMIResult {
@@ -253,8 +197,8 @@ export class VeterinaryBMICalculator {
       return {
         classification: 'Especie no soportada',
         recommendation: 'Cálculo de IMC disponible solo para perros y gatos',
-        nutritionalAdvice: 'Consultar con veterinario para especies exóticas',
-        exerciseRecommendation: 'Consultar con veterinario especialista'
+        nutritionalAdvice: '',
+        exerciseRecommendation: ''
       };
     }
   }
