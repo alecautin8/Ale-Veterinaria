@@ -1201,6 +1201,46 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   )}
                 </div>
 
+                {/* NRC/AAFCO Nutritional Requirements */}
+                {nutritionResult.nutritionalRequirements && (
+                  <div className="border-t border-green-200 pt-3">
+                    <h5 className="font-medium text-green-700 mb-2">
+                      <i className="fas fa-certificate mr-1"></i>
+                      Requerimientos NRC/AAFCO
+                    </h5>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div className="bg-white p-2 rounded border">
+                        <p className="font-medium text-blue-700">Proteína:</p>
+                        <p className="text-blue-600">≥ {nutritionResult.nutritionalRequirements.protein}g/día</p>
+                      </div>
+                      <div className="bg-white p-2 rounded border">
+                        <p className="font-medium text-purple-700">Grasa:</p>
+                        <p className="text-purple-600">≥ {nutritionResult.nutritionalRequirements.fat}g/día</p>
+                      </div>
+                      <div className="bg-white p-2 rounded border">
+                        <p className="font-medium text-orange-700">Ácido Linoleico:</p>
+                        <p className="text-orange-600">≥ {nutritionResult.nutritionalRequirements.linoleicAcid}g/1000kcal</p>
+                      </div>
+                      {nutritionResult.nutritionalRequirements.alphaLinolenicAcid && (
+                        <div className="bg-white p-2 rounded border">
+                          <p className="font-medium text-teal-700">α-Linolénico:</p>
+                          <p className="text-teal-600">≥ {nutritionResult.nutritionalRequirements.alphaLinolenicAcid}g/1000kcal</p>
+                        </div>
+                      )}
+                      {nutritionResult.nutritionalRequirements.arachidonicAcid && (
+                        <div className="bg-white p-2 rounded border">
+                          <p className="font-medium text-red-700">Araquidónico:</p>
+                          <p className="text-red-600">≥ {nutritionResult.nutritionalRequirements.arachidonicAcid}g/1000kcal</p>
+                        </div>
+                      )}
+                      <div className="bg-white p-2 rounded border col-span-2">
+                        <p className="font-medium text-indigo-700">EPA + DHA:</p>
+                        <p className="text-indigo-600">{nutritionResult.nutritionalRequirements.epaDha}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Food Calculator */}
                 <div className="border-t border-green-200 pt-3">
                   <Label className="font-medium text-green-700">Calculadora de Alimento</Label>
