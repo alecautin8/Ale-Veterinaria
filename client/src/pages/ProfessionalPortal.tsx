@@ -153,6 +153,7 @@ const ProfessionalPortal = () => {
 
   // Function to calculate BMI automatically
   const calculateBMI = (formData) => {
+    console.log('calculateBMI called with:', formData);
     const weight = parseFloat(formData.weight);
     if (!weight || weight <= 0 || !formData.species) {
       setBmiResult(null);
@@ -168,6 +169,8 @@ const ProfessionalPortal = () => {
       bcs: formData.bcs || 5
     };
 
+    console.log('BMI params:', params);
+    
     const validation = VeterinaryBMICalculator.validateParams(params);
     if (!validation.isValid) {
       console.warn('BMI calculation validation errors:', validation.errors);
@@ -175,6 +178,7 @@ const ProfessionalPortal = () => {
     }
 
     const result = VeterinaryBMICalculator.calculateBMI(params);
+    console.log('BMI result:', result);
     setBmiResult(result);
   };
 

@@ -32,6 +32,7 @@ export class VeterinaryBMICalculator {
     // FBMI Felino = (Peso corporal en kg / (Longitud de pata trasera en cm)²) × 10000
     if (legLength && legLength > 0) {
       fbmi = (weight / Math.pow(legLength, 2)) * 10000;
+      console.log(`FBMI calculation: weight=${weight}, legLength=${legLength}, result=${fbmi}`);
       
       // Clasificación FBMI felina
       if (fbmi < 15) {
@@ -82,6 +83,7 @@ export class VeterinaryBMICalculator {
     if (bodyLength && bodyLength > 0) {
       const lengthInMeters = bodyLength / 100;
       bmi = weight / Math.pow(lengthInMeters, 2);
+      console.log(`Canine BMI calculation: weight=${weight}, bodyLength=${bodyLength}, lengthInMeters=${lengthInMeters}, result=${bmi}`);
       
       // Clasificación IMC canina (valores ajustados para perros)
       if (bmi < 11) {
@@ -187,13 +189,18 @@ export class VeterinaryBMICalculator {
   
   // Función principal para calcular según especie
   static calculateBMI(params: BMICalculationParams): BMIResult {
+    console.log('VeterinaryBMICalculator.calculateBMI called with:', params);
     const species = params.species.toLowerCase();
+    console.log('Species detected:', species);
     
     if (species.includes('gato') || species.includes('felino')) {
+      console.log('Using FBMI formula for cats');
       return this.calculateFelineFBMI(params);
     } else if (species.includes('perro') || species.includes('canino')) {
+      console.log('Using canine BMI formula for dogs');
       return this.calculateCanineBMI(params);
     } else {
+      console.log('Species not supported:', species);
       return {
         classification: 'Especie no soportada',
         recommendation: 'Cálculo de IMC disponible solo para perros y gatos',
