@@ -2,9 +2,9 @@
 export interface BMICalculationParams {
   species: string;
   weight: number; // en kg
-  bodyLength?: number; // en cm (opcional para algunas fórmulas)
-  chestCircumference?: number; // en cm (para fórmula canina)
-  legLength?: number; // en cm (para fórmula felina)
+  bodyLength?: number; // en cm (no usado en fórmulas actuales)
+  chestCircumference?: number; // en cm (para fórmula canina Mawby)
+  legLength?: number; // en cm (para fórmula felina FBMI y canina Mawby)
   bcs?: number; // Body Condition Score 1-9
 }
 
@@ -73,39 +73,33 @@ export class VeterinaryBMICalculator {
   
   // Fórmula IMC canino (adaptación de Mawby)
   static calculateCanineBMI(params: BMICalculationParams): BMIResult {
-    const { weight, bodyLength, chestCircumference, bcs } = params;
+    const { weight, chestCircumference, legLength, bcs } = params;
     
     let bmi: number | undefined;
     let classification = '';
     let recommendation = '';
     
-    // IMC Canino (Mawby) = Peso (kg) / ((Longitud corporal en cm / 100)²)
-    if (bodyLength && bodyLength > 0) {
-      const lengthInMeters = bodyLength / 100;
-      bmi = weight / Math.pow(lengthInMeters, 2);
-      console.log(`Canine BMI calculation: weight=${weight}, bodyLength=${bodyLength}, lengthInMeters=${lengthInMeters}, result=${bmi}`);
+    // IMC Canino (Mawby) = (Circunferencia torácica / Longitud pata trasera) - 1, luego × 100
+    if (chestCircumference && chestCircumference > 0 && legLength && legLength > 0) {
+      const ratio = chestCircumference / legLength;
+      bmi = (ratio - 1) * 100;
+      console.log(`Canine BMI calculation: chestCircumference=${chestCircumference}, legLength=${legLength}, ratio=${ratio}, result=${bmi}`);
       
-      // Clasificación IMC canina (valores ajustados para perros)
-      if (bmi < 11) {
-        classification = 'Bajo peso severo';
-        recommendation = 'Evaluación veterinaria inmediata. Posible enfermedad subyacente.';
-      } else if (bmi >= 11 && bmi < 15) {
+      // Clasificación IMC canina según rangos de Mawby
+      if (bmi < 25) {
         classification = 'Bajo peso';
         recommendation = 'Incrementar aporte calórico. Evaluar causas de pérdida de peso.';
-      } else if (bmi >= 15 && bmi < 25) {
+      } else if (bmi >= 25 && bmi <= 35) {
         classification = 'Peso ideal';
         recommendation = 'Mantener peso actual con dieta equilibrada y ejercicio regular.';
-      } else if (bmi >= 25 && bmi < 30) {
-        classification = 'Sobrepeso';
-        recommendation = 'Reducir calorías 10-20%. Incrementar ejercicio diario.';
       } else {
-        classification = 'Obesidad';
-        recommendation = 'Plan de pérdida de peso estricto. Control veterinario mensual.';
+        classification = 'Sobrepeso/Obesidad';
+        recommendation = 'Plan de pérdida de peso. Control veterinario.';
       }
     } else {
       // Si no tenemos medidas, usar solo peso y BCS
       classification = 'Evaluación basada en peso y BCS';
-      recommendation = 'Se requieren medidas corporales para IMC preciso.';
+      recommendation = 'Se requieren circunferencia torácica y longitud de pata trasera para IMC Mawby.';
     }
     
     const bcsInterpretation = this.interpretBCS(bcs || 5);

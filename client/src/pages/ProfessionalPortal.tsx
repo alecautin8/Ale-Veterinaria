@@ -885,20 +885,6 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                 {petFormData.species === 'Perro' && (
                   <>
                     <div>
-                      <Label htmlFor="bodyLength">Longitud Corporal (cm)</Label>
-                      <Input
-                        id="bodyLength"
-                        value={petFormData.bodyLength}
-                        onChange={(e) => {
-                          const updatedData = {...petFormData, bodyLength: e.target.value};
-                          setPetFormData(updatedData);
-                          calculateBMI(updatedData);
-                        }}
-                        placeholder="45"
-                        type="number"
-                      />
-                    </div>
-                    <div>
                       <Label htmlFor="chestCircumference">Circunferencia Torácica (cm)</Label>
                       <Input
                         id="chestCircumference"
@@ -908,7 +894,21 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                           setPetFormData(updatedData);
                           calculateBMI(updatedData);
                         }}
-                        placeholder="35"
+                        placeholder="65"
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="legLength">Longitud Pata Trasera (cm)</Label>
+                      <Input
+                        id="legLength"
+                        value={petFormData.legLength}
+                        onChange={(e) => {
+                          const updatedData = {...petFormData, legLength: e.target.value};
+                          setPetFormData(updatedData);
+                          calculateBMI(updatedData);
+                        }}
+                        placeholder="30"
                         type="number"
                       />
                     </div>
@@ -939,9 +939,15 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                 )}
                 
                 {petFormData.species === 'Perro' && (
-                  <div className="text-sm text-gray-600 flex items-center">
-                    <i className="fas fa-info-circle text-blue-500 mr-1"></i>
-                    Longitud: base del cuello a base de la cola
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <div className="flex items-center">
+                      <i className="fas fa-info-circle text-blue-500 mr-1"></i>
+                      Circunferencia: detrás de patas delanteras, nivel esternón
+                    </div>
+                    <div className="flex items-center">
+                      <i className="fas fa-info-circle text-green-500 mr-1"></i>
+                      Pata trasera: trocánter mayor a maléolo lateral del tarso
+                    </div>
                   </div>
                 )}
               </div>
