@@ -88,12 +88,24 @@ The application implements a cohesive design system:
 - **PDF Generation**: Document generation for certificates, prescriptions, and exam orders
 - **Exam Request System**: Automated generation of medical orders with patient-specific instructions
 
-## Recent Changes (December 2024)
+## Recent Changes (January 2025)
 
-- Added comprehensive exam request functionality to professional portal
-- Implemented automatic instruction generation for 6 exam types (Hemograma, Bioquímica, Orina, Coprológico, Radiografía, Ecografía)
-- Created tabbed navigation system in professional portal with Dashboard, Patients, Exams, and Certificates sections
-- Enhanced demo access section on homepage with clear credentials display
-- Integrated exam urgency levels (Normal, Urgent, Emergency) with automatic PDF order generation
+- **WhatsApp Notification System**: Complete implementation of WhatsApp Business integration for client communications
+- **Enhanced Exam System**: Expanded to 9 exam types across 5 categories (Hematología, Bioquímica, Microbiología, Patología, Diagnóstico por Imagen)
+- **Professional Instructions**: Detailed preparation instructions, fasting requirements, and sample collection protocols for each exam type
+- **Emergency Contact**: 24/7 emergency WhatsApp button with automatic message generation for urgent veterinary needs
+- **Real Veterinarian Data**: Complete integration of Dra. Alejandra Cautín Bastías professional information from HTML source
+- **Automated Notifications**: WhatsApp integration for exam reminders, appointment confirmations, result notifications, and vaccination reminders
+- **Client Communication**: Multi-channel notification system allowing veterinarians to send professional communications via WhatsApp
+- **Enhanced Database Schema**: Added comprehensive client fields including RUT validation, emergency contacts, and medical history tracking
 
-The architecture supports future integrations for WhatsApp notifications, email alerts, and medical tracking charts while maintaining a clean separation of concerns between the frontend, backend, and external services.
+## WhatsApp Integration Features
+
+- **Exam Reminders**: Automatic generation of detailed preparation instructions via WhatsApp
+- **Appointment Confirmations**: Professional appointment confirmation messages with veterinarian details
+- **Results Notifications**: Automated alerts when exam results are ready for client review
+- **Vaccination Reminders**: Scheduled vaccination reminders with detailed vaccine information
+- **Emergency Contacts**: 24/7 emergency WhatsApp integration with direct veterinarian contact
+- **Custom Messages**: Flexible message system for personalized client communications
+
+The architecture now includes full WhatsApp Business API integration supporting Chilean phone number formatting and professional veterinary communication templates.

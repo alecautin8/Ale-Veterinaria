@@ -8,6 +8,7 @@ import FAQ from '@/components/FAQ';
 import Resources from '@/components/Resources';
 import Contact from '@/components/Contact';
 import LoginModal from '@/components/LoginModal';
+import { EmergencyWhatsApp } from '@/components/ui/emergency-whatsapp';
 
 const HomePage = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -159,6 +160,9 @@ const HomePage = () => {
         onClose={() => setLoginModalOpen(false)}
         type={loginType}
       />
+      
+      {/* Emergency WhatsApp Button */}
+      <EmergencyWhatsApp />
     </div>
   );
 };

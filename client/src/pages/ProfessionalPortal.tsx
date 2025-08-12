@@ -10,7 +10,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { WhatsAppNotification } from '@/components/ui/whatsapp-notification';
 import { useToast } from '@/hooks/use-toast';
+import { WhatsAppService } from '@/lib/whatsapp';
 
 const ProfessionalPortal = () => {
   const { user, loading } = useAuth();
@@ -334,6 +336,28 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
     });
   };
 
+  const sendExamInstructionsWhatsApp = (petName: string, clientPhone: string) => {
+    const exam = availableExams.find(e => e.id === examData.examType);
+    if (!exam) return;
+
+    const message = WhatsAppService.sendExamReminder({
+      clientName: "Cliente",
+      petName: petName,
+      examType: exam.name,
+      examDate: "Próximamente",
+      instructions: exam.defaultInstructions,
+      veterinarianName: veterinarianInfo.name,
+      clinicPhone: veterinarianInfo.phone
+    });
+
+    WhatsAppService.openWhatsApp(clientPhone, message);
+    
+    toast({
+      title: "WhatsApp abierto",
+      description: "Se enviarán las instrucciones del examen al cliente"
+    });
+  };
+
   const generateCertificate = (type: string) => {
     // Here you would implement PDF generation with html2pdf
     toast({
@@ -638,9 +662,18 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
         {showPatientData && (
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle className="font-poppins flex items-center">
-                <i className="fas fa-history text-mint mr-2"></i>
-                Historial Médico - {patientData.name}
+              <CardTitle className="font-poppins flex items-center justify-between">
+                <div className="flex items-center">
+                  <i className="fas fa-history text-mint mr-2"></i>
+                  Historial Médico - {patientData.name}
+                </div>
+                <div className="flex items-center gap-2">
+                  <WhatsAppNotification 
+                    clientName="Juan Pérez"
+                    clientPhone="+56912345678"
+                    petName={patientData.name}
+                  />
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -899,6 +932,11 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   >
                     Limpiar Formulario
                   </Button>
+                  <WhatsAppNotification 
+                    clientName="Juan Pérez"
+                    clientPhone="+56912345678"
+                    petName="Max"
+                  />
                   <Button
                     onClick={generateExamOrder}
                     className="bg-mint text-darkgray hover:bg-mint/80"
@@ -926,20 +964,34 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                       <span className="font-medium">ORD-2023120801 - Hemograma Completo</span>
                       <p className="text-sm text-gray-600">Max (Canino) - Juan Pérez - 15/12/2023</p>
                     </div>
-                    <Button variant="outline" size="sm">
-                      <i className="fas fa-download mr-1"></i>
-                      Descargar
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <WhatsAppNotification 
+                        clientName="Juan Pérez"
+                        clientPhone="+56912345678"
+                        petName="Max"
+                      />
+                      <Button variant="outline" size="sm">
+                        <i className="fas fa-download mr-1"></i>
+                        Descargar
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <span className="font-medium">ORD-2023120702 - Perfil Bioquímico</span>
                       <p className="text-sm text-gray-600">Luna (Felino) - María Silva - 14/12/2023</p>
                     </div>
-                    <Button variant="outline" size="sm">
-                      <i className="fas fa-download mr-1"></i>
-                      Descargar
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <WhatsAppNotification 
+                        clientName="María Silva"
+                        clientPhone="+56987654321"
+                        petName="Luna"
+                      />
+                      <Button variant="outline" size="sm">
+                        <i className="fas fa-download mr-1"></i>
+                        Descargar
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>
