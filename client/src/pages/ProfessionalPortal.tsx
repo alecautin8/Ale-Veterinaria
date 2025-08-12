@@ -4,6 +4,8 @@ import { useLocation } from 'wouter';
 import { validateRut, formatRut } from '@/lib/rutValidator';
 import { getVaccinesBySpecies, chileanVaccines } from '@/lib/vaccines';
 import { veterinarianConfig } from '@/config/veterinarian';
+import { getBreedsBySpecies } from '@/lib/breeds';
+import { VaccineCalculator } from '@/lib/vaccineCalculator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -107,7 +109,39 @@ const ProfessionalPortal = () => {
     laboratory: 'Zoetis',
     batch: 'VAG123ABC',
     date: new Date().toISOString().split('T')[0],
-    pathogens: ['Distemper', 'Adenovirus tipo 1', 'Adenovirus tipo 2', 'Parainfluenza', 'Parvovirus']
+    pathogens: ['Distemper', 'Adenovirus tipo 1', 'Adenovirus tipo 2', 'Parainfluenza', 'Parvovirus'],
+    validityDays: 365,
+    vaccineType: 'viva modificada',
+    serialNumber: '',
+    applicationSite: 'Cuello (subcutáneo)',
+    veterinarianNotes: ''
+  });
+
+  const [dewormingData, setDewormingData] = useState({
+    type: 'internal',
+    product: '',
+    activeIngredient: '',
+    laboratory: '',
+    batch: '',
+    date: new Date().toISOString().split('T')[0],
+    time: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }),
+    notes: ''
+  });
+
+  const [petFormData, setPetFormData] = useState({
+    name: '',
+    species: '',
+    breed: '',
+    sex: '',
+    color: '',
+    birthDate: '',
+    weight: '',
+    microchipId: '',
+    ownerName: '',
+    ownerRUT: '',
+    ownerPhone: '',
+    ownerAddress: '',
+    ownerEmail: ''
   });
 
   const [examData, setExamData] = useState({
@@ -673,77 +707,191 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
           </CardContent>
         </Card>
 
-        {/* Patient Management */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Clinical Record Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-poppins">Ficha Clínica</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+        {/* Enhanced Pet Information Form */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="font-poppins flex items-center">
+              <i className="fas fa-paw text-mint mr-2"></i>
+              Información Completa del Paciente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="petName">Nombre de la mascota</Label>
+                <Label htmlFor="petName">Nombre de la Mascota</Label>
                 <Input
                   id="petName"
-                  value={patientData.name}
-                  onChange={(e) => setPatientData({ ...patientData, name: e.target.value })}
-                  placeholder="Max"
+                  value={petFormData.name}
+                  onChange={(e) => setPetFormData({...petFormData, name: e.target.value})}
+                  placeholder="Nombre de la mascota"
                 />
               </div>
               <div>
                 <Label htmlFor="species">Especie</Label>
-                <Select onValueChange={(value) => setPatientData({ ...patientData, species: value })}>
+                <Select value={petFormData.species} onValueChange={(value) => {
+                  setPetFormData({...petFormData, species: value, breed: ''});
+                }}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar especie" />
+                    <SelectValue placeholder="Selecciona especie" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Canino">Canino</SelectItem>
-                    <SelectItem value="Felino">Felino</SelectItem>
+                    <SelectItem value="Perro">Perro</SelectItem>
+                    <SelectItem value="Gato">Gato</SelectItem>
+                    <SelectItem value="Hurón">Hurón</SelectItem>
+                    <SelectItem value="Otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
                 <Label htmlFor="breed">Raza</Label>
+                <Select 
+                  value={petFormData.breed} 
+                  onValueChange={(value) => setPetFormData({...petFormData, breed: value})}
+                  disabled={!petFormData.species}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={petFormData.species ? "Selecciona raza" : "Primero selecciona especie"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {petFormData.species && getBreedsBySpecies(petFormData.species).map((breed) => (
+                      <SelectItem key={breed} value={breed}>
+                        {breed}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="sex">Sexo</Label>
+                <Select value={petFormData.sex} onValueChange={(value) => setPetFormData({...petFormData, sex: value})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona sexo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Macho">Macho</SelectItem>
+                    <SelectItem value="Hembra">Hembra</SelectItem>
+                    <SelectItem value="Macho Castrado">Macho Castrado</SelectItem>
+                    <SelectItem value="Hembra Esterilizada">Hembra Esterilizada</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="color">Color</Label>
                 <Input
-                  id="breed"
-                  value={patientData.breed}
-                  onChange={(e) => setPatientData({ ...patientData, breed: e.target.value })}
-                  placeholder="Yorkshire Terrier"
+                  id="color"
+                  value={petFormData.color}
+                  onChange={(e) => setPetFormData({...petFormData, color: e.target.value})}
+                  placeholder="Color del pelaje"
+                />
+              </div>
+              <div>
+                <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
+                <Input
+                  id="birthDate"
+                  type="date"
+                  value={petFormData.birthDate}
+                  onChange={(e) => setPetFormData({...petFormData, birthDate: e.target.value})}
                 />
               </div>
               <div>
                 <Label htmlFor="weight">Peso</Label>
                 <Input
                   id="weight"
-                  value={patientData.weight}
-                  onChange={(e) => setPatientData({ ...patientData, weight: e.target.value })}
+                  value={petFormData.weight}
+                  onChange={(e) => setPetFormData({...petFormData, weight: e.target.value})}
                   placeholder="3.5 kg"
                 />
               </div>
               <div>
-                <Label htmlFor="consultation">Consulta</Label>
-                <Textarea
-                  id="consultation"
-                  value={patientData.consultation}
-                  onChange={(e) => setPatientData({ ...patientData, consultation: e.target.value })}
-                  placeholder="Descripción de la consulta"
-                  rows={3}
+                <Label htmlFor="microchip">Microchip (Opcional)</Label>
+                <Input
+                  id="microchip"
+                  value={petFormData.microchipId}
+                  onChange={(e) => setPetFormData({...petFormData, microchipId: e.target.value})}
+                  placeholder="9840000123456789"
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Vaccine Management */}
+            <div className="mt-6">
+              <h4 className="font-poppins font-semibold text-darkgray mb-4">Información del Tutor</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="ownerName">Nombre Completo del Tutor</Label>
+                  <Input
+                    id="ownerName"
+                    value={petFormData.ownerName}
+                    onChange={(e) => setPetFormData({...petFormData, ownerName: e.target.value})}
+                    placeholder="Juan Pérez González"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="ownerRUT">RUT del Tutor</Label>
+                  <Input
+                    id="ownerRUT"
+                    value={petFormData.ownerRUT}
+                    onChange={(e) => setPetFormData({...petFormData, ownerRUT: formatRut(e.target.value)})}
+                    placeholder="12.345.678-9"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="ownerPhone">Teléfono</Label>
+                  <Input
+                    id="ownerPhone"
+                    value={petFormData.ownerPhone}
+                    onChange={(e) => setPetFormData({...petFormData, ownerPhone: e.target.value})}
+                    placeholder="+56 9 8765 4321"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="ownerEmail">Email</Label>
+                  <Input
+                    id="ownerEmail"
+                    type="email"
+                    value={petFormData.ownerEmail}
+                    onChange={(e) => setPetFormData({...petFormData, ownerEmail: e.target.value})}
+                    placeholder="juan@email.com"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label htmlFor="ownerAddress">Dirección Completa</Label>
+                  <Input
+                    id="ownerAddress"
+                    value={petFormData.ownerAddress}
+                    onChange={(e) => setPetFormData({...petFormData, ownerAddress: e.target.value})}
+                    placeholder="Av. Las Condes 1234, Las Condes, Santiago"
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Enhanced Vaccination and Deworming Forms */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           <Card>
             <CardHeader>
-              <CardTitle className="font-poppins">Gestión de Vacunas</CardTitle>
+              <CardTitle className="font-poppins flex items-center">
+                <i className="fas fa-syringe text-lavender mr-2"></i>
+                Registro de Vacunación Completo
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="vaccine">Vacuna</Label>
-                <Select onValueChange={handleVaccineSelect}>
+                <Select value={vaccineData.vaccineId} onValueChange={(value) => {
+                  const selectedVaccine = chileanVaccines.find(v => v.id === value);
+                  if (selectedVaccine) {
+                    setVaccineData({
+                      ...vaccineData,
+                      vaccineId: value,
+                      laboratory: selectedVaccine.laboratory,
+                      pathogens: selectedVaccine.pathogens
+                    });
+                  }
+                }}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar vacuna..." />
+                    <SelectValue placeholder="Selecciona una vacuna" />
                   </SelectTrigger>
                   <SelectContent>
                     {chileanVaccines.map((vaccine) => (
@@ -754,34 +902,96 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="laboratory">Laboratorio</Label>
                   <Input
                     id="laboratory"
                     value={vaccineData.laboratory}
-                    readOnly
-                    className="bg-gray-50"
+                    onChange={(e) => setVaccineData({ ...vaccineData, laboratory: e.target.value })}
+                    placeholder="Laboratorio"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="vaccineDate">Fecha</Label>
+                  <Label htmlFor="vaccineDate">Fecha de Aplicación</Label>
                   <Input
                     id="vaccineDate"
                     type="date"
                     value={vaccineData.date}
-                    onChange={(e) => setVaccineData({ ...vaccineData, date: e.target.value })}
+                    onChange={(e) => {
+                      const newDate = e.target.value;
+                      setVaccineData({ 
+                        ...vaccineData, 
+                        date: newDate
+                      });
+                    }}
                     max={new Date().toISOString().split('T')[0]}
                   />
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="batch">Lote</Label>
+                  <Input
+                    id="batch"
+                    value={vaccineData.batch}
+                    onChange={(e) => setVaccineData({ ...vaccineData, batch: e.target.value })}
+                    placeholder="A1B2C3"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="serialNumber">Número de Serie</Label>
+                  <Input
+                    id="serialNumber"
+                    value={vaccineData.serialNumber}
+                    onChange={(e) => setVaccineData({ ...vaccineData, serialNumber: e.target.value })}
+                    placeholder="Número de serie"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="vaccineType">Tipo de Vacuna</Label>
+                  <Select value={vaccineData.vaccineType} onValueChange={(value) => setVaccineData({...vaccineData, vaccineType: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Tipo de vacuna" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="viva modificada">Vacuna viva modificada</SelectItem>
+                      <SelectItem value="inactivada">Vacuna inactivada</SelectItem>
+                      <SelectItem value="mixta">Vacuna mixta</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="validityDays">Vigencia (días)</Label>
+                  <Input
+                    id="validityDays"
+                    type="number"
+                    value={vaccineData.validityDays}
+                    onChange={(e) => setVaccineData({ ...vaccineData, validityDays: parseInt(e.target.value) || 365 })}
+                    placeholder="365"
+                  />
+                </div>
+              </div>
+              {vaccineData.date && vaccineData.validityDays && (
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <Label className="font-medium text-blue-800">Próxima Vacunación:</Label>
+                  <p className="text-blue-600">
+                    {VaccineCalculator.calculateNextVaccination({
+                      vaccinationDate: vaccineData.date,
+                      customDuration: vaccineData.validityDays
+                    }).nextDueDate}
+                  </p>
+                </div>
+              )}
               <div>
-                <Label htmlFor="batch">Lote</Label>
+                <Label htmlFor="applicationSite">Sitio de Aplicación</Label>
                 <Input
-                  id="batch"
-                  value={vaccineData.batch}
-                  onChange={(e) => setVaccineData({ ...vaccineData, batch: e.target.value })}
-                  placeholder="A1B2C3"
+                  id="applicationSite"
+                  value={vaccineData.applicationSite}
+                  onChange={(e) => setVaccineData({ ...vaccineData, applicationSite: e.target.value })}
+                  placeholder="Cuello (subcutáneo)"
                 />
               </div>
               {vaccineData.pathogens.length > 0 && (
@@ -792,6 +1002,114 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   </div>
                 </div>
               )}
+              <div>
+                <Label htmlFor="vetNotes">Notas del Veterinario</Label>
+                <Textarea
+                  id="vetNotes"
+                  value={vaccineData.veterinarianNotes}
+                  onChange={(e) => setVaccineData({ ...vaccineData, veterinarianNotes: e.target.value })}
+                  placeholder="Observaciones sobre la vacunación..."
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-poppins flex items-center">
+                <i className="fas fa-bug text-turquoise mr-2"></i>
+                Registro de Desparasitación
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="dewormingType">Tipo de Desparasitación</Label>
+                <Select value={dewormingData.type} onValueChange={(value) => setDewormingData({...dewormingData, type: value})}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="internal">Desparasitación Interna</SelectItem>
+                    <SelectItem value="external">Desparasitación Externa</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="dewormingProduct">Producto</Label>
+                  <Input
+                    id="dewormingProduct"
+                    value={dewormingData.product}
+                    onChange={(e) => setDewormingData({...dewormingData, product: e.target.value})}
+                    placeholder="Drontal Plus / Frontline Plus"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="dewormingLab">Laboratorio</Label>
+                  <Input
+                    id="dewormingLab"
+                    value={dewormingData.laboratory}
+                    onChange={(e) => setDewormingData({...dewormingData, laboratory: e.target.value})}
+                    placeholder="Bayer / Boehringer Ingelheim"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="activeIngredient">Principio Activo</Label>
+                <Input
+                  id="activeIngredient"
+                  value={dewormingData.activeIngredient}
+                  onChange={(e) => setDewormingData({...dewormingData, activeIngredient: e.target.value})}
+                  placeholder="Praziquantel + Pirantel + Febantel"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="dewormingBatch">Lote</Label>
+                  <Input
+                    id="dewormingBatch"
+                    value={dewormingData.batch}
+                    onChange={(e) => setDewormingData({...dewormingData, batch: e.target.value})}
+                    placeholder="DP789XYZ"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="dewormingDate">Fecha</Label>
+                  <Input
+                    id="dewormingDate"
+                    type="date"
+                    value={dewormingData.date}
+                    onChange={(e) => setDewormingData({...dewormingData, date: e.target.value})}
+                    max={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="dewormingTime">Hora de Aplicación</Label>
+                <Input
+                  id="dewormingTime"
+                  type="time"
+                  value={dewormingData.time}
+                  onChange={(e) => setDewormingData({...dewormingData, time: e.target.value})}
+                />
+              </div>
+              <div className="bg-green-50 p-3 rounded-lg">
+                <Label className="font-medium text-green-800">Próxima Desparasitación:</Label>
+                <p className="text-green-600 text-sm">
+                  {dewormingData.type === 'internal' ? 'Interna: Cada 3-6 meses' : 'Externa: Mensual o según exposición'}
+                </p>
+              </div>
+              <div>
+                <Label htmlFor="dewormingNotes">Notas</Label>
+                <Textarea
+                  id="dewormingNotes"
+                  value={dewormingData.notes}
+                  onChange={(e) => setDewormingData({...dewormingData, notes: e.target.value})}
+                  placeholder="Observaciones sobre la desparasitación..."
+                  rows={3}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

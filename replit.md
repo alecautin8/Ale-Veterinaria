@@ -103,6 +103,17 @@ The application implements a cohesive design system:
 - **Client Communication**: Multi-channel notification system allowing veterinarians to send professional communications via WhatsApp
 - **Enhanced Database Schema**: Added comprehensive client fields including RUT validation, emergency contacts, and medical history tracking
 
+### Latest Updates (August 2025)
+
+- **Enhanced Vaccination Management**: Complete vaccination system with automatic next vaccination date calculation based on validity period
+- **Breed-Specific Selection**: Automatic breed dropdown lists for canines and felines based on species selection
+- **Comprehensive Pet Information**: Extended forms to collect all data required for export certificates (owner, pet, veterinarian details)
+- **Owner Portal Enhancement**: Added vaccination card section with printable format including vaccination status tracking
+- **Owner-Managed Deworming**: Tutors can now add deworming records that automatically reflect in clinical files
+- **Vaccine Calculator**: Automated calculation of next vaccination dates with validity period customization
+- **Professional Forms**: Complete vaccination and deworming forms with all fields required for official documentation
+- **Smart Status Tracking**: Color-coded vaccination status (vigente, próxima, vencida) based on calculated dates
+
 ## WhatsApp Integration Features
 
 - **Exam Reminders**: Automatic generation of detailed preparation instructions via WhatsApp
