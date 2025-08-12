@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCare Chile - Atención Veterinaria a Domicilio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mint: '#98E5C7',
+                        lavender: '#E6E6FA',
+                        turquoise: '#AFEEEE',
+                        palerose: '#FFE4E1',
+                        warmbeige: '#F5F5DC',
+                        darkgray: '#2D3748'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'lato': ['Lato', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-warmbeige font-lato">
+    
+    <!-- @COMPONENT: Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-heart text-palerose text-2xl"></i>
+                    <h1 class="text-2xl font-poppins font-bold text-darkgray">VetCare Chile</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#inicio" class="text-darkgray hover:text-mint font-medium transition-colors">Inicio</a>
+                    <a href="#quien-soy" class="text-darkgray hover:text-mint font-medium transition-colors">Quién Soy</a>
+                    <a href="#servicios" class="text-darkgray hover:text-mint font-medium transition-colors">Servicios</a>
+                    <a href="#agendar" class="text-darkgray hover:text-mint font-medium transition-colors">Agendar Cita</a>
+                    <a href="#faq" class="text-darkgray hover:text-mint font-medium transition-colors">FAQ</a>
+                    <a href="#recursos" class="text-darkgray hover:text-mint font-medium transition-colors">Recursos</a>
+                    <a href="#contacto" class="text-darkgray hover:text-mint font-medium transition-colors">Contacto</a>
+                    
+                    <div class="flex space-x-3">
+                        <button onclick="showLoginModal('tutor')" class="bg-lavender text-darkgray px-4 py-2 rounded-lg hover:bg-opacity-80 transition-all">Portal Tutor</button>
+                        <button onclick="showLoginModal('profesional')" class="bg-mint text-darkgray px-4 py-2 rounded-lg hover:bg-opacity-80 transition-all">Portal Veterinario</button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-darkgray" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div class="lg:hidden hidden" id="mobile-menu">
+                <div class="py-4 space-y-4">
+                    <a href="#inicio" class="block text-darkgray hover:text-mint font-medium">Inicio</a>
+                    <a href="#quien-soy" class="block text-darkgray hover:text-mint font-medium">Quién Soy</a>
+                    <a href="#servicios" class="block text-darkgray hover:text-mint font-medium">Servicios</a>
+                    <a href="#agendar" class="block text-darkgray hover:text-mint font-medium">Agendar Cita</a>
+                    <a href="#faq" class="block text-darkgray hover:text-mint font-medium">FAQ</a>
+                    <a href="#recursos" class="block text-darkgray hover:text-mint font-medium">Recursos</a>
+                    <a href="#contacto" class="block text-darkgray hover:text-mint font-medium">Contacto</a>
+                    <div class="pt-4 space-y-3">
+                        <button onclick="showLoginModal('tutor')" class="w-full bg-lavender text-darkgray px-4 py-2 rounded-lg">Portal Tutor</button>
+                        <button onclick="showLoginModal('profesional')" class="w-full bg-mint text-darkgray px-4 py-2 rounded-lg">Portal Veterinario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- @COMPONENT: Hero Section -->
+    <section id="inicio" class="pt-20 bg-gradient-to-br from-turquoise to-palerose min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <h1 class="text-4xl md:text-6xl font-poppins font-bold text-darkgray leading-tight">
+                        Atención Veterinaria a Domicilio con 
+                        <span class="text-mint">Amor</span> y 
+                        <span class="text-lavender">Profesionalismo</span>
+                    </h1>
+                    <p class="text-xl text-darkgray font-lato leading-relaxed">
+                        Cuidamos a tu mascota en la comodidad de tu hogar. Servicios veterinarios especializados con el cariño que tu compañero peludo merece.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#agendar" class="bg-mint text-darkgray px-8 py-4 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all text-center">
+                            <i class="fas fa-calendar-plus mr-2"></i>
+                            Agendar Hora
+                        </a>
+                        <button onclick="scrollToServices()" class="bg-white text-darkgray px-8 py-4 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all">
+                            Ver Servicios
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <!-- Happy Yorkshire Terrier in a cozy home environment -->
+                    <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Yorkshire Terrier feliz en casa" class="rounded-3xl shadow-2xl w-full h-auto" />
+                    <div class="absolute -bottom-4 -right-4 bg-white p-4 rounded-2xl shadow-lg">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-shield-alt text-mint text-2xl"></i>
+                            <div>
+                                <p class="font-poppins font-semibold text-darkgray">100% Seguro</p>
+                                <p class="text-sm text-gray-600">Veterinarios certificados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Hero Section -->
+
+    <!-- @COMPONENT: Services Section -->
+    <section id="servicios" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-poppins font-bold text-darkgray mb-4">Nuestros Servicios</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Ofrecemos atención integral para tu mascota sin salir de casa</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-gradient-to-br from-mint to-turquoise p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-white mb-6">
+                        <i class="fas fa-stethoscope text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Consultas Generales</h3>
+                        <p class="font-lato">Exámenes de rutina, diagnósticos y tratamientos en la comodidad de tu hogar.</p>
+                    </div>
+                    <ul class="text-white space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Examen físico completo</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Diagnóstico profesional</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Plan de tratamiento</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-gradient-to-br from-lavender to-palerose p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-darkgray mb-6">
+                        <i class="fas fa-syringe text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Vacunación</h3>
+                        <p class="font-lato">Plan completo de vacunación y certificados oficiales.</p>
+                    </div>
+                    <ul class="text-darkgray space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Vacunas Zoetis y MSD/Nobivac</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Certificados automáticos</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Seguimiento personalizado</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-gradient-to-br from-palerose to-turquoise p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-darkgray mb-6">
+                        <i class="fas fa-pills text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Desparasitación</h3>
+                        <p class="font-lato">Tratamientos preventivos y curativos contra parásitos internos y externos.</p>
+                    </div>
+                    <ul class="text-darkgray space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Evaluación parasitaria</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Tratamiento específico</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Plan preventivo</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="bg-gradient-to-br from-turquoise to-mint p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-darkgray mb-6">
+                        <i class="fas fa-file-medical text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Certificados</h3>
+                        <p class="font-lato">Emisión de certificados sanitarios y de exportación oficial.</p>
+                    </div>
+                    <ul class="text-darkgray space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Certificados de salud</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Certificados de exportación</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Documentación oficial</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="bg-gradient-to-br from-palerose to-lavender p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-darkgray mb-6">
+                        <i class="fas fa-microscope text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Exámenes</h3>
+                        <p class="font-lato">Análisis de laboratorio y exámenes complementarios.</p>
+                    </div>
+                    <ul class="text-darkgray space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Análisis de sangre</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Exámenes de orina</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Estudios especializados</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="bg-gradient-to-br from-mint to-palerose p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-darkgray mb-6">
+                        <i class="fas fa-home text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-poppins font-semibold mb-3">Atención Domiciliaria</h3>
+                        <p class="font-lato">Comodidad total para tu mascota en su ambiente familiar.</p>
+                    </div>
+                    <ul class="text-darkgray space-y-2 font-lato">
+                        <li><i class="fas fa-check-circle mr-2"></i>Sin estrés para tu mascota</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Atención personalizada</li>
+                        <li><i class="fas fa-check-circle mr-2"></i>Equipos portátiles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Services Section -->
+
+    <!-- @COMPONENT: Coverage Areas Section -->
+    <section class="py-20 bg-gradient-to-r from-warmbeige to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-poppins font-bold text-darkgray mb-4">Zonas de Cobertura</h2>
+                <p class="text-xl text-gray-600">Atendemos en las siguientes comunas de Santiago</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- @MAP: coverageAreas.map(area => ( -->
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-mint text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Las Condes</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-lavender text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Vitacura</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-turquoise text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Providencia</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-palerose text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Ñuñoa</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-mint text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Santiago Centro</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-lavender text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">La Reina</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-turquoise text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Macul</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-palerose text-3xl mb-4"></i>
+                    <h3 class="font-poppins font-semibold text-darkgray text-lg" data-mock="true">Peñalolén</h3>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+
+    <!-- @COMPONENT: About Section -->
+    <section id="quien-soy" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-poppins font-bold text-darkgray mb-6">Dra. María González</h2>
+                    <p class="text-lg text-gray-600 font-lato leading-relaxed">
+                        Con más de 10 años de experiencia en medicina veterinaria, me especializo en atención domiciliaria porque creo que las mascotas se sienten más cómodas y seguras en su hogar.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-mint p-3 rounded-full">
+                                <i class="fas fa-graduation-cap text-darkgray text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-poppins font-semibold text-darkgray">Veterinaria Universidad de Chile</h4>
+                                <p class="text-gray-600 font-lato">Titulada con distinción máxima</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-lavender p-3 rounded-full">
+                                <i class="fas fa-certificate text-darkgray text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-poppins font-semibold text-darkgray">Especialización en Medicina Interna</h4>
+                                <p class="text-gray-600 font-lato">Diplomado en pequeños animales</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-turquoise p-3 rounded-full">
+                                <i class="fas fa-heart text-darkgray text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-poppins font-semibold text-darkgray">10+ años de experiencia</h4>
+                                <p class="text-gray-600 font-lato">Más de 5000 mascotas atendidas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <!-- Professional veterinarian with pet in clinic setting -->
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Dra. María González veterinaria" class="rounded-3xl shadow-2xl w-full h-auto" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: About Section -->
+
+    <!-- @COMPONENT: Booking Section -->
+    <section id="agendar" class="py-20 bg-gradient-to-br from-mint to-turquoise">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-poppins font-bold text-white mb-6">Agenda tu Cita</h2>
+            <p class="text-xl text-white font-lato mb-12 max-w-3xl mx-auto">
+                Selecciona el día y hora que mejor te convenga. Nos pondremos en contacto contigo para confirmar los detalles.
+            </p>
+            
+            <!-- Calendly Integration Placeholder -->
+            <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-4xl mx-auto">
+                <div class="text-center py-16">
+                    <i class="fas fa-calendar-alt text-6xl text-mint mb-6"></i>
+                    <h3 class="text-2xl font-poppins font-semibold text-darkgray mb-4">Calendario de Reservas</h3>
+                    <p class="text-gray-600 font-lato mb-8">Integración con Calendly para agendar citas</p>
+                    <button class="bg-mint text-darkgray px-8 py-4 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all" onclick="openCalendly()">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Abrir Calendario
+                    </button>
+                    <!-- TODO: Implement Calendly widget integration -->
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-poppins font-semibold text-white mb-8">Métodos de Pago</h3>
+                <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <i class="fas fa-credit-card text-3xl text-mint mb-3"></i>
+                        <p class="font-poppins font-medium text-darkgray">Tarjetas</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <i class="fas fa-university text-3xl text-lavender mb-3"></i>
+                        <p class="font-poppins font-medium text-darkgray">Transferencia</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <i class="fas fa-money-bill-wave text-3xl text-turquoise mb-3"></i>
+                        <p class="font-poppins font-medium text-darkgray">Efectivo</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <i class="fas fa-mobile-alt text-3xl text-palerose mb-3"></i>
+                        <p class="font-poppins font-medium text-darkgray">Red Compra</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Booking Section -->
+
+    <!-- @COMPONENT: FAQ Section -->
+    <section id="faq" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-poppins font-bold text-darkgray mb-4">Preguntas Frecuentes</h2>
+                <p class="text-xl text-gray-600">Resolvemos las dudas más comunes</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- @MAP: faqItems.map(item => ( -->
+                <div class="bg-gradient-to-r from-turquoise to-mint p-6 rounded-xl shadow-lg">
+                    <button class="w-full text-left flex justify-between items-center focus:outline-none" onclick="toggleFAQ(1)">
+                        <h3 class="text-xl font-poppins font-semibold text-darkgray" data-mock="true">¿Qué servicios incluye una consulta domiciliaria?</h3>
+                        <i class="fas fa-chevron-down text-darkgray transform transition-transform" id="faq-icon-1"></i>
+                    </button>
+                    <div class="mt-4 text-darkgray font-lato leading-relaxed hidden" id="faq-content-1" data-mock="true">
+                        Incluye examen físico completo, diagnóstico, plan de tratamiento, y seguimiento. También proporcionamos certificados cuando sea necesario.
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-lavender to-palerose p-6 rounded-xl shadow-lg">
+                    <button class="w-full text-left flex justify-between items-center focus:outline-none" onclick="toggleFAQ(2)">
+                        <h3 class="text-xl font-poppins font-semibold text-darkgray" data-mock="true">¿Atienden emergencias?</h3>
+                        <i class="fas fa-chevron-down text-darkgray transform transition-transform" id="faq-icon-2"></i>
+                    </button>
+                    <div class="mt-4 text-darkgray font-lato leading-relaxed hidden" id="faq-content-2" data-mock="true">
+                        Sí, tenemos disponibilidad para emergencias. Contáctanos al WhatsApp y evaluaremos la urgencia de tu caso.
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-palerose to-turquoise p-6 rounded-xl shadow-lg">
+                    <button class="w-full text-left flex justify-between items-center focus:outline-none" onclick="toggleFAQ(3)">
+                        <h3 class="text-xl font-poppins font-semibold text-darkgray" data-mock="true">¿Cómo accedo a los portales?</h3>
+                        <i class="fas fa-chevron-down text-darkgray transform transition-transform" id="faq-icon-3"></i>
+                    </button>
+                    <div class="mt-4 text-darkgray font-lato leading-relaxed hidden" id="faq-content-3" data-mock="true">
+                        Los tutores y veterinarios tienen portales separados con acceso mediante email y contraseña. Te proporcionamos las credenciales tras la primera consulta.
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-mint to-lavender p-6 rounded-xl shadow-lg">
+                    <button class="w-full text-left flex justify-between items-center focus:outline-none" onclick="toggleFAQ(4)">
+                        <h3 class="text-xl font-poppins font-semibold text-darkgray" data-mock="true">¿Cuál es el costo de una consulta?</h3>
+                        <i class="fas fa-chevron-down text-darkgray transform transition-transform" id="faq-icon-4"></i>
+                    </button>
+                    <div class="mt-4 text-darkgray font-lato leading-relaxed hidden" id="faq-content-4" data-mock="true">
+                        Los precios varían según el tipo de consulta y ubicación. Contáctanos para obtener una cotización personalizada.
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FAQ Section -->
+
+    <!-- @COMPONENT: Resources Section -->
+    <section id="recursos" class="py-20 bg-warmbeige">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-poppins font-bold text-darkgray mb-4">Recursos para Tutores</h2>
+                <p class="text-xl text-gray-600">Información útil para el cuidado de tu mascota</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Resource Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-center mb-6">
+                        <!-- Pet care guide illustration -->
+                        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" alt="Guía de cuidado básico" class="rounded-xl w-full h-48 object-cover mb-4" />
+                        <h3 class="text-2xl font-poppins font-semibold text-darkgray mb-3">Guía de Cuidado Básico</h3>
+                        <p class="text-gray-600 font-lato">Consejos esenciales para el cuidado diario de tu mascota</p>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-mint font-poppins font-medium hover:underline">
+                        <i class="fas fa-download mr-2"></i>
+                        Descargar PDF
+                    </a>
+                </div>
+
+                <!-- Resource Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-center mb-6">
+                        <!-- Vaccination calendar illustration -->
+                        <img src="https://pixabay.com/get/gc8d023c4fc269218bb3dc164e85561eca88c90e1ab1a8860505ab3ba92380a4f55b9cff1318f9121e584d179fdb127a9f6d1e09362dae2d77152b8b3e31d44bc_1280.jpg" alt="Calendario de vacunación" class="rounded-xl w-full h-48 object-cover mb-4" />
+                        <h3 class="text-2xl font-poppins font-semibold text-darkgray mb-3">Calendario de Vacunación</h3>
+                        <p class="text-gray-600 font-lato">Programa completo de vacunas por edad</p>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-lavender font-poppins font-medium hover:underline">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        Ver Calendar
+                    </a>
+                </div>
+
+                <!-- Resource Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-center mb-6">
+                        <!-- Emergency care illustration -->
+                        <img src="https://images.unsplash.com/photo-1581888227599-779811939961?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" alt="Primeros auxilios" class="rounded-xl w-full h-48 object-cover mb-4" />
+                        <h3 class="text-2xl font-poppins font-semibold text-darkgray mb-3">Primeros Auxilios</h3>
+                        <p class="text-gray-600 font-lato">Qué hacer en situaciones de emergencia</p>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-turquoise font-poppins font-medium hover:underline">
+                        <i class="fas fa-first-aid mr-2"></i>
+                        Leer Guía
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Resources Section -->
+
+    <!-- @COMPONENT: Contact Section -->
+    <section id="contacto" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-poppins font-bold text-darkgray mb-4">Contacto</h2>
+                <p class="text-xl text-gray-600">Estamos aquí para ayudarte y resolver tus dudas</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-mint p-4 rounded-full">
+                            <i class="fas fa-phone text-darkgray text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-darkgray text-xl">Teléfono</h3>
+                            <p class="text-gray-600 font-lato" data-mock="true">+56 9 1234 5678</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-lavender p-4 rounded-full">
+                            <i class="fas fa-envelope text-darkgray text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-darkgray text-xl">Email</h3>
+                            <p class="text-gray-600 font-lato" data-mock="true">info@vetcarechile.com</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-turquoise p-4 rounded-full">
+                            <i class="fab fa-whatsapp text-darkgray text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-darkgray text-xl">WhatsApp</h3>
+                            <p class="text-gray-600 font-lato" data-mock="true">+56 9 1234 5678</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-palerose p-4 rounded-full">
+                            <i class="fas fa-clock text-darkgray text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-darkgray text-xl">Horarios</h3>
+                            <p class="text-gray-600 font-lato" data-mock="true">Lun-Vie: 8:00-20:00 | Sáb: 9:00-14:00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-gradient-to-br from-warmbeige to-white p-8 rounded-3xl shadow-lg">
+                    <h3 class="text-2xl font-poppins font-semibold text-darkgray mb-6">Envíanos un Mensaje</h3>
+                    <form class="space-y-6" data-implementation="Should validate all fields and send to Firebase/email service">
+                        <div>
+                            <label class="block text-darkgray font-poppins font-medium mb-2">Nombre completo</label>
+                            <input type="text" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-mint focus:outline-none font-lato" placeholder="Tu nombre" data-mock="true" />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-darkgray font-poppins font-medium mb-2">Email</label>
+                            <input type="email" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-lavender focus:outline-none font-lato" placeholder="tu@email.com" data-mock="true" />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-darkgray font-poppins font-medium mb-2">Teléfono</label>
+                            <input type="tel" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-turquoise focus:outline-none font-lato" placeholder="+56 9 1234 5678" data-mock="true" />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-darkgray font-poppins font-medium mb-2">Mensaje</label>
+                            <textarea rows="4" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-palerose focus:outline-none font-lato" placeholder="Cuéntanos sobre tu mascota y cómo podemos ayudarte" data-mock="true"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-mint text-darkgray py-4 px-8 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all" data-event="click:handleContactSubmit">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Contact Section -->
+
+    <!-- @COMPONENT: Login Modal -->
+    <!-- @STATE: isModalOpen:boolean = false -->
+    <!-- @STATE: modalType:string = '' -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-8">
+                <i class="fas fa-user-circle text-4xl text-mint mb-4"></i>
+                <h2 class="text-2xl font-poppins font-bold text-darkgray mb-2" id="modal-title">Portal de Acceso</h2>
+                <p class="text-gray-600 font-lato" id="modal-subtitle">Ingresa tus credenciales</p>
+            </div>
+
+            <form class="space-y-6" data-implementation="Should authenticate with Firebase Auth">
+                <div>
+                    <label class="block text-darkgray font-poppins font-medium mb-2">Email</label>
+                    <input type="email" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-mint focus:outline-none font-lato" placeholder="tu@email.com" data-mock="true" />
+                </div>
+                
+                <div>
+                    <label class="block text-darkgray font-poppins font-medium mb-2">Contraseña</label>
+                    <input type="password" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-lavender focus:outline-none font-lato" placeholder="••••••••" data-mock="true" />
+                </div>
+                
+                <button type="submit" class="w-full bg-mint text-darkgray py-4 px-8 rounded-xl font-poppins font-semibold hover:shadow-lg transition-all" data-event="click:handleLogin">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Iniciar Sesión
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="text-turquoise font-poppins font-medium hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-500 hover:text-darkgray">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Login Modal -->
+
+    <!-- @COMPONENT: Professional Portal Preview -->
+    <div id="professional-portal" class="hidden min-h-screen bg-warmbeige pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h1 class="text-3xl font-poppins font-bold text-darkgray mb-2">Portal Profesional</h1>
+                <p class="text-gray-600 font-lato">Gestión de fichas clínicas y certificados</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+                <h2 class="text-xl font-poppins font-semibold text-darkgray mb-4">Buscar Paciente</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <input type="text" placeholder="Número de ficha" class="p-3 rounded-xl border-2 border-gray-200 focus:border-mint focus:outline-none font-lato" data-mock="true" />
+                    <input type="text" placeholder="Nombre (sin tildes)" class="p-3 rounded-xl border-2 border-gray-200 focus:border-lavender focus:outline-none font-lato" data-mock="true" />
+                    <input type="text" placeholder="RUT (12345678-9)" class="p-3 rounded-xl border-2 border-gray-200 focus:border-turquoise focus:outline-none font-lato" data-mock="true" />
+                </div>
+                <button class="mt-4 bg-mint text-darkgray px-6 py-3 rounded-xl font-poppins font-medium hover:shadow-lg transition-all" data-event="click:handleSearch">
+                    <i class="fas fa-search mr-2"></i>
+                    Buscar
+                </button>
+            </div>
+
+            <!-- Patient Management -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Clinical Record Form -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-poppins font-semibold text-darkgray mb-6">Ficha Clínica</h3>
+                    <!-- TODO: Implement full clinical record form with Firebase integration -->
+                    <div class="space-y-4" data-mock="true">
+                        <div>
+                            <label class="block text-darkgray font-medium mb-2">Nombre de la mascota</label>
+                            <input type="text" class="w-full p-3 rounded-lg border border-gray-200 focus:border-mint focus:outline-none" placeholder="Max" />
+                        </div>
+                        <div>
+                            <label class="block text-darkgray font-medium mb-2">Especie</label>
+                            <select class="w-full p-3 rounded-lg border border-gray-200 focus:border-mint focus:outline-none">
+                                <option>Canino</option>
+                                <option>Felino</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-darkgray font-medium mb-2">Consulta</label>
+                            <textarea rows="3" class="w-full p-3 rounded-lg border border-gray-200 focus:border-mint focus:outline-none" placeholder="Descripción de la consulta"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vaccine Management -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-poppins font-semibold text-darkgray mb-6">Gestión de Vacunas</h3>
+                    <!-- TODO: Implement vaccine autocomplete system for Chilean market -->
+                    <div class="space-y-4" data-mock="true">
+                        <div>
+                            <label class="block text-darkgray font-medium mb-2">Vacuna</label>
+                            <select class="w-full p-3 rounded-lg border border-gray-200 focus:border-lavender focus:outline-none" data-implementation="Should autocomplete with Zoetis and MSD/Nobivac vaccines">
+                                <option>Seleccionar vacuna...</option>
+                                <option>Zoetis - Vanguard Plus 5</option>
+                                <option>MSD - Nobivac DHPPi</option>
+                            </select>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-darkgray font-medium mb-2">Laboratorio</label>
+                                <input type="text" class="w-full p-3 rounded-lg border border-gray-200 bg-gray-50" value="Zoetis" readonly />
+                            </div>
+                            <div>
+                                <label class="block text-darkgray font-medium mb-2">Fecha</label>
+                                <input type="date" class="w-full p-3 rounded-lg border border-gray-200 focus:border-turquoise focus:outline-none" data-validation="no-future-dates" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF Generation Tools -->
+            <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-poppins font-semibold text-darkgray mb-6">Generar Documentos</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-mint text-darkgray px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all" data-implementation="Should generate PDF certificate with html2pdf">
+                        <i class="fas fa-certificate mr-2"></i>
+                        Certificado de Salud
+                    </button>
+                    <button class="bg-lavender text-darkgray px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all" data-implementation="Should generate export certificate with vaccination history">
+                        <i class="fas fa-plane mr-2"></i>
+                        Certificado de Exportación
+                    </button>
+                    <button class="bg-turquoise text-darkgray px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all" data-implementation="Should generate prescription PDF">
+                        <i class="fas fa-prescription mr-2"></i>
+                        Receta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Professional Portal Preview -->
+
+    <!-- @COMPONENT: Owner Portal Preview -->
+    <div id="owner-portal" class="hidden min-h-screen bg-warmbeige pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h1 class="text-3xl font-poppins font-bold text-darkgray mb-2">Portal del Tutor</h1>
+                <p class="text-gray-600 font-lato">Historial médico de tus mascotas</p>
+            </div>
+
+            <!-- Pet Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- @MAP: userPets.map(pet => ( -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    <div class="text-center mb-4">
+                        <!-- Pet photo placeholder -->
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300" alt="Mascota" class="w-24 h-24 rounded-full mx-auto object-cover mb-3" />
+                        <h3 class="text-xl font-poppins font-semibold text-darkgray" data-bind="pet.name" data-mock="true">Max</h3>
+                        <p class="text-gray-600 font-lato" data-bind="pet.species" data-mock="true">Yorkshire Terrier</p>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Última consulta:</span>
+                            <span class="font-medium" data-bind="pet.lastVisit" data-mock="true">15/12/2023</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Próxima vacuna:</span>
+                            <span class="font-medium" data-bind="pet.nextVaccine" data-mock="true">15/01/2024</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 bg-mint text-darkgray py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all" data-event="click:viewPetHistory" data-bind="pet.id">
+                        Ver Historial
+                    </button>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Medical History -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-poppins font-semibold text-darkgray mb-6">Historial Médico</h3>
+                
+                <div class="space-y-4">
+                    <!-- @MAP: medicalHistory.map(record => ( -->
+                    <div class="border-l-4 border-mint pl-4 py-3" data-mock="true">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-poppins font-medium text-darkgray" data-bind="record.type">Vacunación</h4>
+                                <p class="text-gray-600 font-lato" data-bind="record.description">Vanguard Plus 5 - Zoetis</p>
+                                <p class="text-sm text-gray-500 font-lato" data-bind="record.date">15/12/2023</p>
+                            </div>
+                            <button class="bg-lavender text-darkgray px-3 py-1 rounded-lg text-sm font-medium hover:shadow-lg transition-all" data-event="click:downloadDocument" data-bind="record.id">
+                                <i class="fas fa-download mr-1"></i>
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-turquoise pl-4 py-3" data-mock="true">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-poppins font-medium text-darkgray">Consulta General</h4>
+                                <p class="text-gray-600 font-lato">Revisión rutinaria - Estado de salud excelente</p>
+                                <p class="text-sm text-gray-500 font-lato">10/11/2023</p>
+                            </div>
+                            <button class="bg-palerose text-darkgray px-3 py-1 rounded-lg text-sm font-medium hover:shadow-lg transition-all">
+                                <i class="fas fa-download mr-1"></i>
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Owner Portal Preview -->
+
+    <!-- Footer -->
+    <footer class="bg-darkgray text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <i class="fas fa-heart text-palerose text-2xl"></i>
+                        <h3 class="text-xl font-poppins font-bold">VetCare Chile</h3>
+                    </div>
+                    <p class="text-gray-300 font-lato leading-relaxed">
+                        Atención veterinaria profesional a domicilio. Cuidamos a tu mascota con amor y dedicación en Santiago, Chile.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-gray-300 font-lato">
+                        <li><a href="#servicios" class="hover:text-mint transition-colors">Servicios</a></li>
+                        <li><a href="#agendar" class="hover:text-lavender transition-colors">Agendar Cita</a></li>
+                        <li><a href="#faq" class="hover:text-turquoise transition-colors">FAQ</a></li>
+                        <li><a href="#contacto" class="hover:text-palerose transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-300 font-lato">
+                        <li data-mock="true"><i class="fas fa-phone mr-2"></i>+56 9 1234 5678</li>
+                        <li data-mock="true"><i class="fas fa-envelope mr-2"></i>info@vetcarechile.com</li>
+                        <li data-mock="true"><i class="fas fa-map-marker-alt mr-2"></i>Santiago, Chile</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 font-lato">
+                <p>&copy; 2023 VetCare Chile. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TODO: Initialize Firebase configuration
+        // TODO: Implement Firebase Auth, Firestore, and Storage
+        // TODO: Implement RUT validation with module 11 algorithm
+        // TODO: Implement vaccine autocomplete system
+        // TODO: Implement PDF generation with html2pdf
+        
+        (function() {
+            // Mobile menu toggle
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenu.classList.toggle('hidden');
+            };
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Login modal functions
+            window.showLoginModal = function(type) {
+                const modal = document.getElementById('login-modal');
+                const title = document.getElementById('modal-title');
+                const subtitle = document.getElementById('modal-subtitle');
+                
+                if (type === 'tutor') {
+                    title.textContent = 'Portal del Tutor';
+                    subtitle.textContent = 'Accede al historial de tus mascotas';
+                } else {
+                    title.textContent = 'Portal Profesional';
+                    subtitle.textContent = 'Gestiona fichas clínicas y certificados';
+                }
+                
+                modal.classList.remove('hidden');
+            };
+
+            window.closeLoginModal = function() {
+                document.getElementById('login-modal').classList.add('hidden');
+            };
+
+            // FAQ toggle function
+            window.toggleFAQ = function(id) {
+                const content = document.getElementById(`faq-content-${id}`);
+                const icon = document.getElementById(`faq-icon-${id}`);
+                
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            };
+
+            // Scroll to services function
+            window.scrollToServices = function() {
+                document.getElementById('servicios').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            };
+
+            // Calendly integration placeholder
+            window.openCalendly = function() {
+                // TODO: Implement Calendly widget integration
+                alert('Integración con Calendly - Aquí se abriría el calendario de reservas');
+            };
+
+            // Handle contact form submission
+            window.handleContactSubmit = function(e) {
+                e.preventDefault();
+                // TODO: Implement form validation and submission
+                alert('Formulario enviado - Implementar validación y envío a Firebase/email');
+            };
+
+            // Handle login
+            window.handleLogin = function(e) {
+                e.preventDefault();
+                // TODO: Implement Firebase Authentication
+                alert('Login - Implementar autenticación con Firebase Auth');
+            };
+
+            // Handle search
+            window.handleSearch = function() {
+                // TODO: Implement intelligent search with RUT validation
+                alert('Búsqueda - Implementar búsqueda inteligente con validación de RUT');
+            };
+
+            // View pet history
+            window.viewPetHistory = function(petId) {
+                // TODO: Implement pet history view with Firebase data
+                alert(`Ver historial de mascota ID: ${petId}`);
+            };
+
+            // Download document
+            window.downloadDocument = function(docId) {
+                // TODO: Implement PDF download from Firebase Storage
+                alert(`Descargar documento ID: ${docId}`);
+            };
+
+            // Navbar background change on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white');
+                    navbar.classList.add('shadow-lg');
+                } else {
+                    navbar.classList.remove('bg-white');
+                    navbar.classList.remove('shadow-lg');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
