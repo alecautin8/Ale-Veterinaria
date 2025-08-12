@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { WhatsAppService } from '@/lib/whatsapp';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -51,24 +52,40 @@ const Contact = () => {
     });
   };
 
+  const handleWhatsAppClick = () => {
+    const message = `Hola! Me gustaría obtener más información sobre los servicios veterinarios a domicilio de VetCare Chile.
+
+¿Podrían ayudarme con:
+- Información sobre servicios disponibles
+- Precios y horarios
+- Agendar una consulta
+
+Gracias!`;
+
+    WhatsAppService.openWhatsApp("+56912345678", message);
+  };
+
   const contactInfo = [
     {
       icon: "fas fa-phone",
       title: "Teléfono",
       value: "+56 9 1234 5678",
-      color: "bg-mint"
+      color: "bg-mint",
+      action: () => window.open("tel:+56912345678")
     },
     {
       icon: "fas fa-envelope",
       title: "Email",
       value: "info@vetcarechile.com",
-      color: "bg-lavender"
+      color: "bg-lavender",
+      action: () => window.open("mailto:info@vetcarechile.com")
     },
     {
       icon: "fab fa-whatsapp",
       title: "WhatsApp",
       value: "+56 9 1234 5678",
-      color: "bg-turquoise"
+      color: "bg-green-500",
+      action: handleWhatsAppClick
     },
     {
       icon: "fas fa-clock",
@@ -90,13 +107,20 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="space-y-8">
             {contactInfo.map((info, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <div className={`${info.color} p-4 rounded-full`}>
-                  <i className={`${info.icon} text-darkgray text-2xl`}></i>
+              <div 
+                key={index} 
+                className={`flex items-center space-x-4 ${info.action ? 'cursor-pointer hover:scale-105 transition-transform' : ''}`}
+                onClick={info.action}
+              >
+                <div className={`${info.color} p-4 rounded-full ${info.action ? 'hover:shadow-lg' : ''}`}>
+                  <i className={`${info.icon} text-white text-2xl`}></i>
                 </div>
                 <div>
                   <h3 className="font-poppins font-semibold text-darkgray text-xl">{info.title}</h3>
                   <p className="text-gray-600 font-lato">{info.value}</p>
+                  {info.title === "WhatsApp" && (
+                    <p className="text-sm text-green-600 font-lato mt-1">¡Haz clic para chatear!</p>
+                  )}
                 </div>
               </div>
             ))}
