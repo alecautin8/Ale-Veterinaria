@@ -113,6 +113,11 @@ The application implements a cohesive design system:
 - **Vaccine Calculator**: Automated calculation of next vaccination dates with validity period customization
 - **Professional Forms**: Complete vaccination and deworming forms with all fields required for official documentation
 - **Smart Status Tracking**: Color-coded vaccination status (vigente, próxima, vencida) based on calculated dates
+- **Veterinary BMI Calculator**: Automatic BMI/BCS calculation using FBMI formula for cats and canine IMC adaptation of Mawby for dogs
+- **Body Condition Score Integration**: Complete BCS (1-9 scale) evaluation with automatic interpretation and recommendations
+- **Species-Specific Measurements**: Dynamic form fields for body measurements based on pet species (leg length for cats, body length for dogs)
+- **Nutritional Assessment**: Automated nutritional and exercise recommendations based on BMI/BCS results
+- **Ideal Weight Calculation**: Automatic calculation of ideal weight ranges based on current BCS score
 
 ## WhatsApp Integration Features
 

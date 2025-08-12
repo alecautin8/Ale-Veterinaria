@@ -1,0 +1,295 @@
+// Calculadora de IMC veterinario y BCS (Body Condition Score)
+export interface BMICalculationParams {
+  species: string;
+  weight: number; // en kg
+  bodyLength?: number; // en cm (opcional para algunas fórmulas)
+  chestCircumference?: number; // en cm (para fórmula canina)
+  legLength?: number; // en cm (para fórmula felina)
+  bcs?: number; // Body Condition Score 1-9
+}
+
+export interface BMIResult {
+  bmi?: number;
+  fbmi?: number; // Para gatos
+  classification: string;
+  recommendation: string;
+  bcsInterpretation?: string;
+  idealWeightRange?: string;
+  nutritionalAdvice: string;
+  exerciseRecommendation: string;
+}
+
+export class VeterinaryBMICalculator {
+  
+  // Fórmula FBMI para gatos (Feline Body Mass Index)
+  static calculateFelineFBMI(params: BMICalculationParams): BMIResult {
+    const { weight, legLength, bcs } = params;
+    
+    let fbmi: number | undefined;
+    let classification = '';
+    let recommendation = '';
+    
+    // FBMI = (Peso corporal en kg / (Longitud de pata trasera en cm)²) × 10000
+    if (legLength && legLength > 0) {
+      fbmi = (weight / Math.pow(legLength, 2)) * 10000;
+      
+      // Clasificación FBMI felina
+      if (fbmi < 15) {
+        classification = 'Bajo peso severo';
+        recommendation = 'Evaluación nutricional urgente. Posible patología subyacente.';
+      } else if (fbmi >= 15 && fbmi < 20) {
+        classification = 'Bajo peso';
+        recommendation = 'Incrementar aporte calórico con dieta hipercalórica.';
+      } else if (fbmi >= 20 && fbmi < 30) {
+        classification = 'Peso ideal';
+        recommendation = 'Mantener peso actual con dieta balanceada.';
+      } else if (fbmi >= 30 && fbmi < 35) {
+        classification = 'Sobrepeso';
+        recommendation = 'Reducir aporte calórico 10-15%. Incrementar actividad física.';
+      } else {
+        classification = 'Obesidad';
+        recommendation = 'Plan de pérdida de peso supervisado. Dieta hipocalórica.';
+      }
+    } else {
+      // Si no tenemos medidas, usar solo peso y BCS
+      classification = 'Evaluación basada en peso y BCS';
+      recommendation = 'Se requieren medidas corporales para FBMI preciso.';
+    }
+    
+    const bcsInterpretation = this.interpretBCS(bcs || 5);
+    const idealWeightRange = this.calculateIdealWeightRange(weight, bcs || 5);
+    const nutritionalAdvice = this.getFelineNutritionalAdvice(fbmi, bcs);
+    const exerciseRecommendation = this.getFelineExerciseRecommendation(fbmi, bcs);
+    
+    return {
+      fbmi,
+      classification,
+      recommendation,
+      bcsInterpretation,
+      idealWeightRange,
+      nutritionalAdvice,
+      exerciseRecommendation
+    };
+  }
+  
+  // Fórmula IMC canino (adaptación de Mawby)
+  static calculateCanineBMI(params: BMICalculationParams): BMIResult {
+    const { weight, bodyLength, chestCircumference, bcs } = params;
+    
+    let bmi: number | undefined;
+    let classification = '';
+    let recommendation = '';
+    
+    // IMC Canino = Peso (kg) / ((Longitud corporal en cm / 100)²)
+    // Alternativamente: usar circunferencia torácica para mayor precisión
+    if (bodyLength && bodyLength > 0) {
+      const lengthInMeters = bodyLength / 100;
+      bmi = weight / Math.pow(lengthInMeters, 2);
+      
+      // Clasificación IMC canina (valores ajustados para perros)
+      if (bmi < 11) {
+        classification = 'Bajo peso severo';
+        recommendation = 'Evaluación veterinaria inmediata. Posible enfermedad subyacente.';
+      } else if (bmi >= 11 && bmi < 15) {
+        classification = 'Bajo peso';
+        recommendation = 'Incrementar aporte calórico. Evaluar causas de pérdida de peso.';
+      } else if (bmi >= 15 && bmi < 25) {
+        classification = 'Peso ideal';
+        recommendation = 'Mantener peso actual con dieta equilibrada y ejercicio regular.';
+      } else if (bmi >= 25 && bmi < 30) {
+        classification = 'Sobrepeso';
+        recommendation = 'Reducir calorías 10-20%. Incrementar ejercicio diario.';
+      } else {
+        classification = 'Obesidad';
+        recommendation = 'Plan de pérdida de peso estricto. Control veterinario mensual.';
+      }
+    } else {
+      // Si no tenemos medidas, usar solo peso y BCS
+      classification = 'Evaluación basada en peso y BCS';
+      recommendation = 'Se requieren medidas corporales para IMC preciso.';
+    }
+    
+    const bcsInterpretation = this.interpretBCS(bcs || 5);
+    const idealWeightRange = this.calculateIdealWeightRange(weight, bcs || 5);
+    const nutritionalAdvice = this.getCanineNutritionalAdvice(bmi, bcs);
+    const exerciseRecommendation = this.getCanineExerciseRecommendation(bmi, bcs);
+    
+    return {
+      bmi,
+      classification,
+      recommendation,
+      bcsInterpretation,
+      idealWeightRange,
+      nutritionalAdvice,
+      exerciseRecommendation
+    };
+  }
+  
+  // Interpretación del Body Condition Score (escala 1-9)
+  static interpretBCS(bcs: number): string {
+    if (bcs <= 1) {
+      return 'BCS 1: Extremadamente delgado - Costillas, vértebras y huesos pélvicos claramente visibles';
+    } else if (bcs <= 2) {
+      return 'BCS 2: Muy delgado - Costillas fácilmente palpables sin presión';
+    } else if (bcs <= 3) {
+      return 'BCS 3: Delgado - Costillas palpables con ligera presión';
+    } else if (bcs <= 4) {
+      return 'BCS 4: Bajo del ideal - Costillas palpables con presión mínima';
+    } else if (bcs === 5) {
+      return 'BCS 5: Ideal - Costillas palpables sin exceso de grasa. Cintura visible';
+    } else if (bcs <= 6) {
+      return 'BCS 6: Sobre el ideal - Costillas palpables con ligera dificultad';
+    } else if (bcs <= 7) {
+      return 'BCS 7: Sobrepeso - Costillas difíciles de palpar debido a grasa';
+    } else if (bcs <= 8) {
+      return 'BCS 8: Obeso - Costillas muy difíciles de palpar. Depósitos de grasa evidentes';
+    } else {
+      return 'BCS 9: Extremadamente obeso - Costillas no palpables. Depósitos masivos de grasa';
+    }
+  }
+  
+  // Calcular rango de peso ideal basado en BCS actual
+  static calculateIdealWeightRange(currentWeight: number, bcs: number): string {
+    let adjustmentFactor = 1;
+    
+    switch (bcs) {
+      case 1:
+      case 2:
+        adjustmentFactor = 1.20; // Necesita ganar 20%
+        break;
+      case 3:
+        adjustmentFactor = 1.10; // Necesita ganar 10%
+        break;
+      case 4:
+        adjustmentFactor = 1.05; // Necesita ganar 5%
+        break;
+      case 5:
+        adjustmentFactor = 1.00; // Peso ideal
+        break;
+      case 6:
+        adjustmentFactor = 0.95; // Necesita perder 5%
+        break;
+      case 7:
+        adjustmentFactor = 0.85; // Necesita perder 15%
+        break;
+      case 8:
+        adjustmentFactor = 0.75; // Necesita perder 25%
+        break;
+      case 9:
+        adjustmentFactor = 0.65; // Necesita perder 35%
+        break;
+      default:
+        adjustmentFactor = 1.00;
+    }
+    
+    const idealWeight = currentWeight * adjustmentFactor;
+    const lowerRange = idealWeight * 0.95;
+    const upperRange = idealWeight * 1.05;
+    
+    return `${lowerRange.toFixed(1)} - ${upperRange.toFixed(1)} kg`;
+  }
+  
+  // Consejos nutricionales específicos para felinos
+  private static getFelineNutritionalAdvice(fbmi?: number, bcs?: number): string {
+    if (!fbmi && (!bcs || bcs === 5)) {
+      return 'Mantener dieta balanceada para gatos adultos. 200-300 kcal/día según actividad.';
+    }
+    
+    if ((fbmi && fbmi < 20) || (bcs && bcs <= 3)) {
+      return 'Dieta hipercalórica: alimento premium para gatos, 350-400 kcal/día. Suplementos nutricionales si es necesario.';
+    } else if ((fbmi && fbmi > 30) || (bcs && bcs >= 7)) {
+      return 'Dieta hipocalórica: alimento light para gatos, 150-200 kcal/día. Evitar snacks. Comidas fraccionadas.';
+    } else {
+      return 'Dieta de mantenimiento: alimento balanceado para gatos adultos, 250-300 kcal/día según actividad.';
+    }
+  }
+  
+  // Consejos nutricionales específicos para caninos
+  private static getCanineNutritionalAdvice(bmi?: number, bcs?: number): string {
+    if (!bmi && (!bcs || bcs === 5)) {
+      return 'Mantener dieta balanceada según tamaño. Razas pequeñas: 200-400 kcal/día, medianas: 600-1000 kcal/día, grandes: 1200-2000 kcal/día.';
+    }
+    
+    if ((bmi && bmi < 15) || (bcs && bcs <= 3)) {
+      return 'Dieta hipercalórica: incrementar 20-30% las calorías. Alimento premium, comidas frecuentes. Suplementos si es necesario.';
+    } else if ((bmi && bmi > 25) || (bcs && bcs >= 7)) {
+      return 'Dieta hipocalórica: reducir 15-25% las calorías. Alimento light, eliminar snacks, comidas controladas.';
+    } else {
+      return 'Dieta de mantenimiento: alimento balanceado según edad y actividad. Ajustar según nivel de ejercicio.';
+    }
+  }
+  
+  // Recomendaciones de ejercicio para felinos
+  private static getFelineExerciseRecommendation(fbmi?: number, bcs?: number): string {
+    if ((fbmi && fbmi > 30) || (bcs && bcs >= 7)) {
+      return 'Ejercicio moderado: 15-20 min de juego activo diario. Juguetes interactivos, láser, cañas de pescar.';
+    } else if ((fbmi && fbmi < 20) || (bcs && bcs <= 3)) {
+      return 'Ejercicio suave: estimular actividad lúdica sin sobreexigir. Enfoque en recuperación nutricional.';
+    } else {
+      return 'Ejercicio regular: 10-15 min de juego activo diario. Mantener instintos de caza activos.';
+    }
+  }
+  
+  // Recomendaciones de ejercicio para caninos
+  private static getCanineExerciseRecommendation(bmi?: number, bcs?: number): string {
+    if ((bmi && bmi > 25) || (bcs && bcs >= 7)) {
+      return 'Ejercicio intensivo: 30-60 min diarios. Caminatas largas, natación si es posible. Incrementar gradualmente.';
+    } else if ((bmi && bmi < 15) || (bcs && bcs <= 3)) {
+      return 'Ejercicio controlado: paseos cortos y suaves. Evitar sobreexigir hasta recuperar peso ideal.';
+    } else {
+      return 'Ejercicio regular: 30-45 min diarios según raza. Paseos, juegos, actividades según energía del perro.';
+    }
+  }
+  
+  // Función principal para calcular según especie
+  static calculateBMI(params: BMICalculationParams): BMIResult {
+    const species = params.species.toLowerCase();
+    
+    if (species.includes('gato') || species.includes('felino')) {
+      return this.calculateFelineFBMI(params);
+    } else if (species.includes('perro') || species.includes('canino')) {
+      return this.calculateCanineBMI(params);
+    } else {
+      return {
+        classification: 'Especie no soportada',
+        recommendation: 'Cálculo de IMC disponible solo para perros y gatos',
+        nutritionalAdvice: 'Consultar con veterinario para especies exóticas',
+        exerciseRecommendation: 'Consultar con veterinario especialista'
+      };
+    }
+  }
+  
+  // Validar parámetros de entrada
+  static validateParams(params: BMICalculationParams): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    
+    if (!params.weight || params.weight <= 0) {
+      errors.push('El peso debe ser mayor a 0 kg');
+    }
+    
+    if (params.weight && params.weight > 200) {
+      errors.push('Peso excesivamente alto. Verificar unidad de medida (kg)');
+    }
+    
+    if (params.bodyLength && (params.bodyLength < 5 || params.bodyLength > 200)) {
+      errors.push('Longitud corporal debe estar entre 5 y 200 cm');
+    }
+    
+    if (params.legLength && (params.legLength < 2 || params.legLength > 50)) {
+      errors.push('Longitud de pata debe estar entre 2 y 50 cm');
+    }
+    
+    if (params.chestCircumference && (params.chestCircumference < 10 || params.chestCircumference > 150)) {
+      errors.push('Circunferencia torácica debe estar entre 10 y 150 cm');
+    }
+    
+    if (params.bcs && (params.bcs < 1 || params.bcs > 9)) {
+      errors.push('BCS debe estar entre 1 y 9');
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+}

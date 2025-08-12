@@ -142,41 +142,8 @@ const ProfessionalPortal = () => {
     ownerRUT: '',
     ownerPhone: '',
     ownerAddress: '',
-    ownerEmail: '',
-    bodyLength: '',
-    chestCircumference: '',
-    legLength: '',
-    bcs: 5
+    ownerEmail: ''
   });
-
-  const [bmiResult, setBmiResult] = useState(null);
-
-  // Function to calculate BMI automatically
-  const calculateBMI = (formData) => {
-    const weight = parseFloat(formData.weight);
-    if (!weight || weight <= 0 || !formData.species) {
-      setBmiResult(null);
-      return;
-    }
-
-    const params = {
-      species: formData.species,
-      weight: weight,
-      bodyLength: parseFloat(formData.bodyLength) || undefined,
-      chestCircumference: parseFloat(formData.chestCircumference) || undefined,
-      legLength: parseFloat(formData.legLength) || undefined,
-      bcs: formData.bcs || 5
-    };
-
-    const validation = VeterinaryBMICalculator.validateParams(params);
-    if (!validation.isValid) {
-      console.warn('BMI calculation validation errors:', validation.errors);
-      return;
-    }
-
-    const result = VeterinaryBMICalculator.calculateBMI(params);
-    setBmiResult(result);
-  };
 
   const [examData, setExamData] = useState({
     examType: '',
@@ -828,18 +795,12 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                 />
               </div>
               <div>
-                <Label htmlFor="weight">Peso (kg)</Label>
+                <Label htmlFor="weight">Peso</Label>
                 <Input
                   id="weight"
                   value={petFormData.weight}
-                  onChange={(e) => {
-                    const updatedData = {...petFormData, weight: e.target.value};
-                    setPetFormData(updatedData);
-                    calculateBMI(updatedData);
-                  }}
-                  placeholder="3.5"
-                  type="number"
-                  step="0.1"
+                  onChange={(e) => setPetFormData({...petFormData, weight: e.target.value})}
+                  placeholder="3.5 kg"
                 />
               </div>
               <div>
@@ -851,165 +812,6 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   placeholder="9840000123456789"
                 />
               </div>
-            </div>
-
-            {/* BMI and BCS Calculation Section */}
-            <div className="mt-6">
-              <h4 className="font-poppins font-semibold text-darkgray mb-4">Evaluación Corporal y Nutricional</h4>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="bcs">BCS (Body Condition Score) 1-9</Label>
-                  <Select value={petFormData.bcs.toString()} onValueChange={(value) => {
-                    const newBcs = parseInt(value);
-                    const updatedData = {...petFormData, bcs: newBcs};
-                    setPetFormData(updatedData);
-                    calculateBMI(updatedData);
-                  }}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona BCS" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1,2,3,4,5,6,7,8,9].map(score => (
-                        <SelectItem key={score} value={score.toString()}>
-                          BCS {score} - {score <= 3 ? 'Bajo peso' : score <= 6 ? 'Normal' : 'Sobrepeso'}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                {petFormData.species === 'Perro' && (
-                  <>
-                    <div>
-                      <Label htmlFor="bodyLength">Longitud Corporal (cm)</Label>
-                      <Input
-                        id="bodyLength"
-                        value={petFormData.bodyLength}
-                        onChange={(e) => {
-                          const updatedData = {...petFormData, bodyLength: e.target.value};
-                          setPetFormData(updatedData);
-                          calculateBMI(updatedData);
-                        }}
-                        placeholder="45"
-                        type="number"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="chestCircumference">Circunferencia Torácica (cm)</Label>
-                      <Input
-                        id="chestCircumference"
-                        value={petFormData.chestCircumference}
-                        onChange={(e) => {
-                          const updatedData = {...petFormData, chestCircumference: e.target.value};
-                          setPetFormData(updatedData);
-                          calculateBMI(updatedData);
-                        }}
-                        placeholder="35"
-                        type="number"
-                      />
-                    </div>
-                  </>
-                )}
-                
-                {petFormData.species === 'Gato' && (
-                  <>
-                    <div>
-                      <Label htmlFor="legLength">Longitud Pata Trasera (cm)</Label>
-                      <Input
-                        id="legLength"
-                        value={petFormData.legLength}
-                        onChange={(e) => {
-                          const updatedData = {...petFormData, legLength: e.target.value};
-                          setPetFormData(updatedData);
-                          calculateBMI(updatedData);
-                        }}
-                        placeholder="15"
-                        type="number"
-                      />
-                    </div>
-                    <div className="text-sm text-gray-600 flex items-center">
-                      <i className="fas fa-info-circle text-blue-500 mr-1"></i>
-                      Medir desde cadera hasta talón
-                    </div>
-                  </>
-                )}
-                
-                {petFormData.species === 'Perro' && (
-                  <div className="text-sm text-gray-600 flex items-center">
-                    <i className="fas fa-info-circle text-blue-500 mr-1"></i>
-                    Longitud: base del cuello a base de la cola
-                  </div>
-                )}
-              </div>
-
-              {/* BMI Results Display */}
-              {bmiResult && (
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border">
-                  <h5 className="font-poppins font-semibold text-darkgray mb-3">
-                    Evaluación Nutricional Automática
-                  </h5>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      {bmiResult.bmi && (
-                        <div className="bg-white p-3 rounded">
-                          <Label className="font-medium text-blue-800">IMC Canino:</Label>
-                          <p className="text-lg font-bold text-blue-600">{bmiResult.bmi.toFixed(1)}</p>
-                        </div>
-                      )}
-                      
-                      {bmiResult.fbmi && (
-                        <div className="bg-white p-3 rounded">
-                          <Label className="font-medium text-green-800">FBMI Felino:</Label>
-                          <p className="text-lg font-bold text-green-600">{bmiResult.fbmi.toFixed(1)}</p>
-                        </div>
-                      )}
-                      
-                      <div className="bg-white p-3 rounded">
-                        <Label className="font-medium text-purple-800">Clasificación:</Label>
-                        <p className={`font-semibold ${
-                          bmiResult.classification.includes('ideal') ? 'text-green-600' :
-                          bmiResult.classification.includes('sobrepeso') ? 'text-yellow-600' :
-                          bmiResult.classification.includes('obesidad') ? 'text-red-600' : 'text-blue-600'
-                        }`}>
-                          {bmiResult.classification}
-                        </p>
-                      </div>
-                      
-                      {bmiResult.idealWeightRange && (
-                        <div className="bg-white p-3 rounded">
-                          <Label className="font-medium text-indigo-800">Peso Ideal:</Label>
-                          <p className="font-semibold text-indigo-600">{bmiResult.idealWeightRange}</p>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <div className="bg-white p-3 rounded">
-                        <Label className="font-medium text-gray-800">BCS Interpretación:</Label>
-                        <p className="text-sm text-gray-600">{bmiResult.bcsInterpretation}</p>
-                      </div>
-                      
-                      <div className="bg-white p-3 rounded">
-                        <Label className="font-medium text-orange-800">Recomendación:</Label>
-                        <p className="text-sm text-orange-600">{bmiResult.recommendation}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 grid md:grid-cols-2 gap-4">
-                    <div className="bg-amber-50 p-3 rounded border-l-4 border-amber-400">
-                      <Label className="font-medium text-amber-800">Nutrición:</Label>
-                      <p className="text-sm text-amber-700">{bmiResult.nutritionalAdvice}</p>
-                    </div>
-                    
-                    <div className="bg-cyan-50 p-3 rounded border-l-4 border-cyan-400">
-                      <Label className="font-medium text-cyan-800">Ejercicio:</Label>
-                      <p className="text-sm text-cyan-700">{bmiResult.exerciseRecommendation}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className="mt-6">

@@ -4,7 +4,7 @@ const About = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h2 className="text-4xl font-poppins font-bold text-darkgray mb-6">Dra. María González</h2>
+            <h2 className="text-4xl font-poppins font-bold text-darkgray mb-6">Dra. Alejandra Cautin</h2>
             <p className="text-lg text-gray-600 font-lato leading-relaxed">
               Con más de 10 años de experiencia en medicina veterinaria, me especializo en atención domiciliaria porque creo que las mascotas se sienten más cómodas y seguras en su hogar.
             </p>
