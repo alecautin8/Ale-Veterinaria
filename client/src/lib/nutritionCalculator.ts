@@ -15,14 +15,6 @@ export interface NutritionResult {
   weightManagement?: string;
   description?: string;
   meals?: number;
-  nutritionalRequirements?: {
-    protein: number; // g/día
-    fat: number; // g/día
-    linoleicAcid: number; // g/1000 kcal
-    alphaLinolenicAcid?: number; // g/1000 kcal (solo perros)
-    arachidonicAcid?: number; // g/1000 kcal (solo gatos)
-    epaDha?: string; // recomendación EPA+DHA
-  };
 }
 
 export class VeterinaryNutritionCalculator {
@@ -153,25 +145,11 @@ export class VeterinaryNutritionCalculator {
     // Calcular DER final
     const dailyKcal = Math.round(rer * multiplier);
     
-    // Calcular peso metabólico (kg^0.75)
-    const metabolicWeight = Math.pow(weight, 0.75);
-    
-    // Calcular requerimientos nutricionales según NRC/AAFCO
-    let nutritionalRequirements;
     let description = '';
     let meals = 2; // Por defecto 2 comidas
     
     if (species === 'Perro') {
-      // Requerimientos para perros adultos (NRC/AAFCO)
-      nutritionalRequirements = {
-        protein: Math.round(2.62 * metabolicWeight * 10) / 10, // g/día
-        fat: Math.round(1.3 * metabolicWeight * 10) / 10, // g/día
-        linoleicAcid: Math.round((2.8 * dailyKcal / 1000) * 10) / 10, // g/1000 kcal
-        alphaLinolenicAcid: Math.round((0.08 * dailyKcal / 1000) * 100) / 100, // g/1000 kcal
-        epaDha: '0.05-0.1 g/1000 kcal (beneficioso)'
-      };
-      
-      description = '≈18% proteína, ≈5.5% grasa de energía metabolizable';
+      description = 'Requerimiento energético canino';
       
       // Ajustar número de comidas según clasificación
       if (activityLevel === 'puppy_under4') {
@@ -183,16 +161,7 @@ export class VeterinaryNutritionCalculator {
       }
       
     } else if (species === 'Gato') {
-      // Requerimientos para gatos adultos (NRC/AAFCO)
-      nutritionalRequirements = {
-        protein: Math.round(5.0 * metabolicWeight * 10) / 10, // g/día
-        fat: Math.round(2.0 * metabolicWeight * 10) / 10, // g/día
-        linoleicAcid: Math.round((2.0 * dailyKcal / 1000) * 10) / 10, // g/1000 kcal
-        arachidonicAcid: Math.round((0.02 * dailyKcal / 1000) * 100) / 100, // g/1000 kcal (solo gatos)
-        epaDha: '0.05-0.1 g/1000 kcal (recomendado)'
-      };
-      
-      description = '≈26% proteína, ≈9% grasa de energía metabolizable';
+      description = 'Requerimiento energético felino';
       
       // Ajustar número de comidas según clasificación
       if (activityLevel === 'kitten') {
@@ -208,8 +177,7 @@ export class VeterinaryNutritionCalculator {
       recommendations,
       weightManagement,
       description,
-      meals,
-      nutritionalRequirements
+      meals
     };
   }
 
