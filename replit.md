@@ -90,10 +90,14 @@ The application implements a cohesive design system:
 
 ## Recent Changes (January 2025)
 
+- **SAG Export Certificate System**: Complete automated generation of official SAG export certificates following exact government format
+- **Official Document Compliance**: Auto-fills certificates with pet data, owner information, vaccination records, and veterinarian details
+- **Species-Specific Annexes**: Automatic generation of proper vaccine and deworming tables for dogs, cats, and ferrets
+- **Professional Certificate Generation**: Integrates with existing patient records to create legally compliant export documents
+- **WhatsApp Contact Integration**: Streamlined WhatsApp contact system without intrusive emergency popup
 - **WhatsApp Notification System**: Complete implementation of WhatsApp Business integration for client communications
 - **Enhanced Exam System**: Expanded to 9 exam types across 5 categories (Hematología, Bioquímica, Microbiología, Patología, Diagnóstico por Imagen)
 - **Professional Instructions**: Detailed preparation instructions, fasting requirements, and sample collection protocols for each exam type
-- **Emergency Contact**: 24/7 emergency WhatsApp button with automatic message generation for urgent veterinary needs
 - **Real Veterinarian Data**: Complete integration of Dra. Alejandra Cautín Bastías professional information from HTML source
 - **Automated Notifications**: WhatsApp integration for exam reminders, appointment confirmations, result notifications, and vaccination reminders
 - **Client Communication**: Multi-channel notification system allowing veterinarians to send professional communications via WhatsApp
@@ -109,3 +113,13 @@ The application implements a cohesive design system:
 - **Custom Messages**: Flexible message system for personalized client communications
 
 The architecture now includes full WhatsApp Business API integration supporting Chilean phone number formatting and professional veterinary communication templates.
+
+## SAG Certificate Integration
+
+The platform now generates official export certificates compliant with Chilean Agricultural and Livestock Service (SAG) requirements:
+
+- **Automated Data Population**: Extracts patient, owner, and veterinarian information from existing records
+- **Official Format Compliance**: Follows exact SAG document structure with proper sections and annexes
+- **Species-Specific Requirements**: Generates appropriate vaccine tables for dogs (ANEXO 2), cats (ANEXO 1), and ferrets (ANEXO 3)
+- **Professional Validation**: Includes veterinarian signature areas and official certification language
+- **Print-Ready Output**: Opens in new window with proper formatting for immediate printing or PDF generation

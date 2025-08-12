@@ -39,6 +39,68 @@ const ProfessionalPortal = () => {
   });
 
   const [showPatientData, setShowPatientData] = useState(true);
+  const [selectedPet, setSelectedPet] = useState<string | null>(null);
+  
+  // Mock data for pets, medical records, and vaccinations
+  const [pets] = useState([
+    {
+      id: '1',
+      name: 'Max',
+      species: 'Perro',
+      breed: 'Yorkshire Terrier',
+      sex: 'Macho',
+      color: 'Marrón y negro',
+      birthDate: '2020-05-15',
+      microchipId: '9840000123456789',
+      ownerId: '1'
+    },
+    {
+      id: '2',
+      name: 'Luna',
+      species: 'Gato',
+      breed: 'Persa',
+      sex: 'Hembra',
+      color: 'Blanco',
+      birthDate: '2019-08-22',
+      microchipId: '9840000987654321',
+      ownerId: '2'
+    }
+  ]);
+
+  const [medicalRecords] = useState([
+    {
+      id: '1',
+      petId: '1',
+      date: '2023-12-15',
+      diagnosis: 'Control rutinario',
+      treatment: 'Vacunación y desparasitación',
+      notes: 'Paciente en excelente estado de salud',
+      veterinarianId: '1'
+    }
+  ]);
+
+  const [vaccinations] = useState([
+    {
+      id: '1',
+      petId: '1',
+      vaccine: 'Vanguard Plus 5 (Distemper, Adenovirus, Parvovirus, Parainfluenza)',
+      date: '2023-12-15',
+      nextDue: '2024-12-15',
+      veterinarianId: '1',
+      batchNumber: 'VAG123ABC',
+      laboratory: 'Zoetis'
+    },
+    {
+      id: '2',
+      petId: '1',
+      vaccine: 'Antirrábica',
+      date: '2023-11-20',
+      nextDue: '2024-11-20',
+      veterinarianId: '1',
+      batchNumber: 'RAB456DEF',
+      laboratory: 'Zoetis'
+    }
+  ]);
 
   const [vaccineData, setVaccineData] = useState({
     vaccineId: 'zoetis-vanguard-plus5',
@@ -358,12 +420,88 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
     });
   };
 
-  const generateCertificate = (type: string) => {
-    // Here you would implement PDF generation with html2pdf
-    toast({
-      title: "Generando certificado",
-      description: `Certificado de ${type} generándose con html2pdf`,
-    });
+  const generateCertificate = async (type: string) => {
+    if (type === 'exportación') {
+      await generateSAGExportCertificate();
+    } else {
+      // Otros tipos de certificados
+      toast({
+        title: "Generando certificado",
+        description: `Certificado de ${type} generándose con html2pdf`,
+      });
+    }
+  };
+
+  const generateSAGExportCertificate = async () => {
+    if (!selectedPet) {
+      toast({
+        title: "Error",
+        description: "Selecciona una mascota para generar el certificado",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      // Importar dinámicamente el servicio SAG
+      const { SAGCertificateService } = await import('@/lib/sagCertificate');
+      
+      // Obtener datos de la mascota seleccionada
+      const petData = pets.find(p => p.id === selectedPet);
+      if (!petData) {
+        throw new Error("No se encontraron datos de la mascota");
+      }
+
+      // Obtener registros médicos y vacunas de la mascota
+      const petMedicalRecords = medicalRecords.filter(record => record.petId === selectedPet);
+      const petVaccinations = vaccinations.filter(vaccination => vaccination.petId === selectedPet);
+
+      // Datos simulados del dueño (en una app real esto vendría de la base de datos)
+      const ownerData = {
+        name: "Juan Pérez González",
+        rut: "12.345.678-9",
+        phone: "+56 9 8765 4321",
+        address: "Av. Las Condes 1234, Las Condes, Santiago"
+      };
+
+      // Generar datos del certificado SAG
+      const certificateData = SAGCertificateService.generateCertificateData(
+        petData,
+        ownerData,
+        petMedicalRecords,
+        petVaccinations
+      );
+
+      // Generar HTML del certificado
+      const certificateHTML = SAGCertificateService.generateHTMLCertificate(certificateData);
+
+      // Crear una nueva ventana para mostrar el certificado
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+      if (printWindow) {
+        printWindow.document.write(certificateHTML);
+        printWindow.document.close();
+        
+        // Esperar a que cargue e imprimir
+        printWindow.onload = () => {
+          setTimeout(() => {
+            printWindow.print();
+          }, 1000);
+        };
+      }
+
+      toast({
+        title: "Certificado SAG generado",
+        description: "Certificado de exportación oficial generado correctamente",
+      });
+
+    } catch (error) {
+      console.error('Error generando certificado SAG:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo generar el certificado de exportación",
+        variant: "destructive"
+      });
+    }
   };
 
   if (loading) {
@@ -716,6 +854,28 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
             </CardTitle>
           </CardHeader>
           <CardContent>
+            {/* Pet Selection for Certificate Generation */}
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <Label htmlFor="petSelect" className="font-poppins font-medium">Seleccionar Mascota para Certificados</Label>
+              <Select value={selectedPet || ''} onValueChange={setSelectedPet}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Selecciona una mascota..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {pets.map((pet) => (
+                    <SelectItem key={pet.id} value={pet.id}>
+                      {pet.name} - {pet.species} ({pet.breed})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {selectedPet && (
+                <div className="mt-2 text-sm text-gray-600">
+                  <i className="fas fa-check-circle text-green-600 mr-1"></i>
+                  Mascota seleccionada: {pets.find(p => p.id === selectedPet)?.name}
+                </div>
+              )}
+            </div>
             <div className="grid md:grid-cols-3 gap-4">
               <Button 
                 onClick={() => generateCertificate('salud')}
@@ -730,11 +890,13 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
               <Button 
                 onClick={() => generateCertificate('exportación')}
                 className="bg-lavender text-darkgray hover:bg-lavender/80 p-6 h-auto flex flex-col items-center space-y-2"
+                disabled={!selectedPet}
               >
                 <i className="fas fa-plane text-3xl"></i>
                 <div>
-                  <div className="font-semibold">Certificado de Exportación</div>
-                  <div className="text-sm opacity-80">Con anexos de vacunas</div>
+                  <div className="font-semibold">Certificado SAG de Exportación</div>
+                  <div className="text-sm opacity-80">Formato oficial - Llenado automático</div>
+                  {!selectedPet && <div className="text-xs text-red-600 mt-1">Selecciona una mascota</div>}
                 </div>
               </Button>
               <Button 
