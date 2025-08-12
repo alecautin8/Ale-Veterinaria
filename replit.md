@@ -117,7 +117,7 @@ The application implements a cohesive design system:
 - **Body Condition Score Integration**: Complete BCS (1-9 scale) evaluation with automatic interpretation and recommendations
 - **Species-Specific Measurements**: Dynamic form fields for body measurements based on pet species (leg length for cats, body length for dogs)
 - **Ideal Weight Calculation**: Automatic calculation of ideal weight ranges based on current BCS score
-- **Corrected Formulas**: FBMI for cats using leg length measurement, IMC canino (Mawby) for dogs using chest circumference and rear leg length ratio
+- **Corrected Formulas**: FBMI for cats using chest circumference and tibia length, IMC canino (Mawby) for dogs using chest circumference and rear leg length ratio
 
 ## WhatsApp Integration Features
 

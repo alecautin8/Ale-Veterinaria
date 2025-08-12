@@ -3,8 +3,8 @@ export interface BMICalculationParams {
   species: string;
   weight: number; // en kg
   bodyLength?: number; // en cm (no usado en fórmulas actuales)
-  chestCircumference?: number; // en cm (para fórmula canina Mawby)
-  legLength?: number; // en cm (para fórmula felina FBMI y canina Mawby)
+  chestCircumference?: number; // en cm (para ambas fórmulas)
+  legLength?: number; // en cm (tibia para gatos, pata trasera para perros)
   bcs?: number; // Body Condition Score 1-9
 }
 
@@ -23,38 +23,37 @@ export class VeterinaryBMICalculator {
   
   // Fórmula FBMI para gatos (Feline Body Mass Index)
   static calculateFelineFBMI(params: BMICalculationParams): BMIResult {
-    const { weight, legLength, bcs } = params;
+    const { weight, chestCircumference, legLength, bcs } = params;
     
     let fbmi: number | undefined;
     let classification = '';
     let recommendation = '';
     
-    // FBMI Felino = (Peso corporal en kg / (Longitud de pata trasera en cm)²) × 10000
-    if (legLength && legLength > 0) {
-      fbmi = (weight / Math.pow(legLength, 2)) * 10000;
-      console.log(`FBMI calculation: weight=${weight}, legLength=${legLength}, result=${fbmi}`);
+    // FBMI = (Circunferencia torácica - 20) / (0.7062 × longitud tibia)
+    if (chestCircumference && chestCircumference > 0 && legLength && legLength > 0) {
+      const numerator = chestCircumference - 20;
+      const denominator = 0.7062 * legLength;
+      fbmi = numerator / denominator;
+      console.log(`FBMI calculation: chestCircumference=${chestCircumference}, legLength=${legLength}, numerator=${numerator}, denominator=${denominator}, result=${fbmi}`);
       
       // Clasificación FBMI felina
       if (fbmi < 15) {
-        classification = 'Bajo peso severo';
-        recommendation = 'Evaluación nutricional urgente. Posible patología subyacente.';
-      } else if (fbmi >= 15 && fbmi < 20) {
         classification = 'Bajo peso';
-        recommendation = 'Incrementar aporte calórico con dieta hipercalórica.';
-      } else if (fbmi >= 20 && fbmi < 30) {
+        recommendation = 'Evaluación nutricional. Incrementar aporte calórico.';
+      } else if (fbmi >= 15 && fbmi <= 25) {
         classification = 'Peso ideal';
         recommendation = 'Mantener peso actual con dieta balanceada.';
-      } else if (fbmi >= 30 && fbmi < 35) {
-        classification = 'Sobrepeso';
-        recommendation = 'Reducir aporte calórico 10-15%. Incrementar actividad física.';
+      } else if (fbmi > 30) {
+        classification = 'Sobrepeso/Obesidad';
+        recommendation = 'Plan de pérdida de peso supervisado.';
       } else {
-        classification = 'Obesidad';
-        recommendation = 'Plan de pérdida de peso supervisado. Dieta hipocalórica.';
+        classification = 'Tendencia sobrepeso';
+        recommendation = 'Monitorear peso y ajustar dieta si es necesario.';
       }
     } else {
       // Si no tenemos medidas, usar solo peso y BCS
       classification = 'Evaluación basada en peso y BCS';
-      recommendation = 'Se requieren medidas corporales para FBMI preciso.';
+      recommendation = 'Se requieren circunferencia torácica y longitud de tibia para FBMI.';
     }
     
     const bcsInterpretation = this.interpretBCS(bcs || 5);

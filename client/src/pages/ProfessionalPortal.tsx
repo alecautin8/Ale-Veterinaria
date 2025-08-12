@@ -918,7 +918,21 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                 {petFormData.species === 'Gato' && (
                   <>
                     <div>
-                      <Label htmlFor="legLength">Longitud Pata Trasera (cm)</Label>
+                      <Label htmlFor="chestCircumference">Circunferencia Torácica (cm)</Label>
+                      <Input
+                        id="chestCircumference"
+                        value={petFormData.chestCircumference}
+                        onChange={(e) => {
+                          const updatedData = {...petFormData, chestCircumference: e.target.value};
+                          setPetFormData(updatedData);
+                          calculateBMI(updatedData);
+                        }}
+                        placeholder="35"
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="legLength">Longitud Tibia (cm)</Label>
                       <Input
                         id="legLength"
                         value={petFormData.legLength}
@@ -927,13 +941,19 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                           setPetFormData(updatedData);
                           calculateBMI(updatedData);
                         }}
-                        placeholder="15"
+                        placeholder="12"
                         type="number"
                       />
                     </div>
-                    <div className="text-sm text-gray-600 flex items-center">
-                      <i className="fas fa-info-circle text-blue-500 mr-1"></i>
-                      Medir desde cadera hasta talón
+                    <div className="text-sm text-gray-600 space-y-1">
+                      <div className="flex items-center">
+                        <i className="fas fa-info-circle text-blue-500 mr-1"></i>
+                        Circunferencia: detrás de patas delanteras, nivel esternón
+                      </div>
+                      <div className="flex items-center">
+                        <i className="fas fa-info-circle text-green-500 mr-1"></i>
+                        Tibia: punto medio rótula a maléolo lateral tobillo
+                      </div>
                     </div>
                   </>
                 )}
