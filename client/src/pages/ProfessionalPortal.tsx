@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WhatsAppNotification } from '@/components/ui/whatsapp-notification';
 import { useToast } from '@/hooks/use-toast';
 import { WhatsAppService } from '@/lib/whatsapp';
+import { VeterinaryNutritionCalculator, commonPetFoods, type NutritionCalculationParams } from '@/lib/nutritionCalculator';
 
 const ProfessionalPortal = () => {
   const { user, loading } = useAuth();
@@ -151,6 +152,16 @@ const ProfessionalPortal = () => {
   });
 
   const [bmiResult, setBmiResult] = useState(null);
+  
+  // Estado para cálculo nutricional
+  const [nutritionData, setNutritionData] = useState({
+    activityLevel: 'normal',
+    reproductiveStatus: 'neutered',
+    selectedFood: '',
+    customKcalPer100g: ''
+  });
+  
+  const [nutritionResult, setNutritionResult] = useState(null);
 
   // Function to calculate BMI automatically
   const calculateBMI = (formData) => {
@@ -181,6 +192,31 @@ const ProfessionalPortal = () => {
     const result = VeterinaryBMICalculator.calculateBMI(params);
     console.log('BMI result:', result);
     setBmiResult(result);
+    
+    // También calcular nutrición si tenemos los datos necesarios
+    calculateNutrition(formData);
+  };
+
+  // Función para calcular requerimientos nutricionales
+  const calculateNutrition = (formData) => {
+    const weight = parseFloat(formData.weight);
+    if (!weight || weight <= 0 || !formData.species || !formData.bcs) {
+      setNutritionResult(null);
+      return;
+    }
+
+    const params: NutritionCalculationParams = {
+      species: formData.species,
+      weight: weight,
+      bcs: formData.bcs,
+      activityLevel: nutritionData.activityLevel,
+      reproductiveStatus: nutritionData.reproductiveStatus
+    };
+
+    const result = VeterinaryNutritionCalculator.calculateDER(params);
+    const mealDistribution = VeterinaryNutritionCalculator.getMealDistribution(formData.species, weight);
+    
+    setNutritionResult({ ...result, ...mealDistribution });
   };
 
   const [examData, setExamData] = useState({
@@ -1084,6 +1120,142 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                 </div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Nutrition Zone */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-poppins flex items-center">
+              <i className="fas fa-utensils text-turquoise mr-2"></i>
+              Plan Nutricional
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="activityLevel">Nivel de Actividad</Label>
+                <Select 
+                  value={nutritionData.activityLevel} 
+                  onValueChange={(value) => {
+                    const updated = {...nutritionData, activityLevel: value};
+                    setNutritionData(updated);
+                    calculateNutrition(petFormData);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sedentary">Sedentario</SelectItem>
+                    <SelectItem value="normal">Normal</SelectItem>
+                    <SelectItem value="active">Activo</SelectItem>
+                    <SelectItem value="working">Trabajo/Competencia</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="reproductiveStatus">Estado Reproductivo</Label>
+                <Select 
+                  value={nutritionData.reproductiveStatus} 
+                  onValueChange={(value) => {
+                    const updated = {...nutritionData, reproductiveStatus: value};
+                    setNutritionData(updated);
+                    calculateNutrition(petFormData);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="intact">Entero</SelectItem>
+                    <SelectItem value="neutered">Castrado</SelectItem>
+                    <SelectItem value="pregnant">Gestante</SelectItem>
+                    <SelectItem value="lactating">Lactante</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {nutritionResult && (
+              <div className="bg-green-50 p-4 rounded-lg space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-semibold text-green-800">Requerimiento Energético Diario</h4>
+                  <span className="text-2xl font-bold text-green-700">{nutritionResult.dailyKcal} kcal</span>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-medium text-green-700">Clasificación:</p>
+                    <p className="text-green-600">{nutritionResult.classification}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-green-700">Distribución:</p>
+                    <p className="text-green-600">{nutritionResult.description}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-green-200 pt-3">
+                  <p className="font-medium text-green-700 mb-2">Recomendaciones:</p>
+                  <p className="text-green-600 text-sm">{nutritionResult.recommendations}</p>
+                  {nutritionResult.weightManagement && (
+                    <p className="text-green-600 text-sm mt-2 font-medium">
+                      <i className="fas fa-balance-scale mr-1"></i>
+                      {nutritionResult.weightManagement}
+                    </p>
+                  )}
+                </div>
+
+                {/* Food Calculator */}
+                <div className="border-t border-green-200 pt-3">
+                  <Label className="font-medium text-green-700">Calculadora de Alimento</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <Select 
+                      value={nutritionData.selectedFood} 
+                      onValueChange={(value) => setNutritionData({...nutritionData, selectedFood: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar alimento" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {petFormData.species && commonPetFoods[petFormData.species.toLowerCase() === 'perro' ? 'dog' : 'cat']?.map((food, index) => (
+                          <SelectItem key={index} value={food.kcalPer100g.toString()}>
+                            {food.name} ({food.kcalPer100g} kcal/100g)
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="custom">Personalizado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    
+                    {nutritionData.selectedFood === 'custom' && (
+                      <Input
+                        placeholder="kcal/100g"
+                        value={nutritionData.customKcalPer100g}
+                        onChange={(e) => setNutritionData({...nutritionData, customKcalPer100g: e.target.value})}
+                        type="number"
+                      />
+                    )}
+                  </div>
+                  
+                  {(nutritionData.selectedFood && nutritionData.selectedFood !== 'custom') || 
+                   (nutritionData.selectedFood === 'custom' && nutritionData.customKcalPer100g) ? (
+                    <div className="mt-3 p-2 bg-white rounded border">
+                      <p className="text-green-700 font-medium">
+                        Cantidad diaria recomendada: {
+                          VeterinaryNutritionCalculator.calculateFoodAmount(
+                            nutritionResult.dailyKcal,
+                            parseInt(nutritionData.selectedFood === 'custom' ? nutritionData.customKcalPer100g : nutritionData.selectedFood) || 350
+                          )
+                        } gramos
+                      </p>
+                      <p className="text-green-600 text-sm">
+                        Dividir en {nutritionResult.meals} comidas por día
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
