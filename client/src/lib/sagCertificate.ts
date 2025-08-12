@@ -35,9 +35,9 @@ interface VaccinationRecord {
 // Información del veterinario para el certificado
 const VETERINARIAN_INFO = {
   name: "Dra. Alejandra Cautín Bastías",
-  rut: "12.345.678-9",
-  phone: "+56 9 1234 5678",
-  address: "Av. Providencia 1234, Providencia, Santiago"
+  rut: "19.463.420-K",
+  phone: "+56 9 7604 0797",
+  address: "Las Condes, Santiago"
 };
 
 export interface SAGCertificateData {
