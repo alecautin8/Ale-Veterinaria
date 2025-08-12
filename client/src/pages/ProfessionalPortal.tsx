@@ -126,6 +126,7 @@ const ProfessionalPortal = () => {
     batch: '',
     date: new Date().toISOString().split('T')[0],
     time: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }),
+    frequencyMonths: 3,
     notes: ''
   });
 
@@ -1183,13 +1184,18 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="validityDays">Vigencia (días)</Label>
+                  <Label htmlFor="validityYears">Vigencia (años)</Label>
                   <Input
-                    id="validityDays"
+                    id="validityYears"
                     type="number"
-                    value={vaccineData.validityDays}
-                    onChange={(e) => setVaccineData({ ...vaccineData, validityDays: parseInt(e.target.value) || 365 })}
-                    placeholder="365"
+                    value={Math.round(vaccineData.validityDays / 365)}
+                    onChange={(e) => {
+                      const years = parseInt(e.target.value) || 1;
+                      setVaccineData({ ...vaccineData, validityDays: years * 365 });
+                    }}
+                    placeholder="1"
+                    min="1"
+                    max="5"
                   />
                 </div>
               </div>
@@ -1313,11 +1319,40 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
                   onChange={(e) => setDewormingData({...dewormingData, time: e.target.value})}
                 />
               </div>
-              <div className="bg-green-50 p-3 rounded-lg">
-                <Label className="font-medium text-green-800">Próxima Desparasitación:</Label>
-                <p className="text-green-600 text-sm">
-                  {dewormingData.type === 'internal' ? 'Interna: Cada 3-6 meses' : 'Externa: Mensual o según exposición'}
-                </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="dewormingFrequency">Frecuencia de Desparasitación (meses)</Label>
+                  <Select value={dewormingData.frequencyMonths?.toString() || "3"} onValueChange={(value) => setDewormingData({...dewormingData, frequencyMonths: parseInt(value)})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona frecuencia" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 mes</SelectItem>
+                      <SelectItem value="2">2 meses</SelectItem>
+                      <SelectItem value="3">3 meses</SelectItem>
+                      <SelectItem value="4">4 meses</SelectItem>
+                      <SelectItem value="6">6 meses</SelectItem>
+                      <SelectItem value="12">12 meses</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="bg-green-50 p-3 rounded-lg">
+                  <Label className="font-medium text-green-800">Próxima Desparasitación:</Label>
+                  {dewormingData.date && dewormingData.frequencyMonths && (
+                    <p className="text-green-600 text-sm">
+                      {(() => {
+                        const nextDate = new Date(dewormingData.date);
+                        nextDate.setMonth(nextDate.getMonth() + dewormingData.frequencyMonths);
+                        return nextDate.toLocaleDateString('es-CL');
+                      })()}
+                    </p>
+                  )}
+                  {(!dewormingData.date || !dewormingData.frequencyMonths) && (
+                    <p className="text-green-600 text-sm">
+                      Ingresa fecha y frecuencia para calcular
+                    </p>
+                  )}
+                </div>
               </div>
               <div>
                 <Label htmlFor="dewormingNotes">Notas</Label>
