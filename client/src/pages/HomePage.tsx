@@ -121,10 +121,10 @@ const HomePage = () => {
             <div>
               <div className="flex items-center space-x-3 mb-6">
                 <i className="fas fa-heart text-palerose text-2xl"></i>
-                <h3 className="text-xl font-poppins font-bold">VetCare Chile</h3>
+                <h3 className="text-xl font-poppins font-bold">Dra. Alejandra Cautin</h3>
               </div>
               <p className="text-gray-300 font-lato leading-relaxed">
-                Atención veterinaria profesional a domicilio. Cuidamos a tu mascota con amor y dedicación en Santiago, Chile.
+                Atención veterinaria a domicilio. Cuido a tu mascota con amor y dedicación en Santiago, Chile.
               </p>
             </div>
             
@@ -141,15 +141,15 @@ const HomePage = () => {
             <div>
               <h4 className="font-poppins font-semibold mb-4">Contacto</h4>
               <ul className="space-y-2 text-gray-300 font-lato">
-                <li><i className="fas fa-phone mr-2"></i>+56 9 1234 5678</li>
-                <li><i className="fas fa-envelope mr-2"></i>info@vetcarechile.com</li>
+                <li><i className="fas fa-phone mr-2"></i>+56 9 7604 0797</li>
+                <li><i className="fas fa-envelope mr-2"></i>avmveterinaira@gmail.com</li>
                 <li><i className="fas fa-map-marker-alt mr-2"></i>Santiago, Chile</li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 font-lato">
-            <p>&copy; 2023 VetCare Chile. Todos los derechos reservados.</p>
+            <p>&copy; 2023 Ale Veterinaira Chile. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>
