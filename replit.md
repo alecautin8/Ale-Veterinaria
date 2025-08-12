@@ -102,6 +102,9 @@ The application implements a cohesive design system:
 - **Automated Notifications**: WhatsApp integration for exam reminders, appointment confirmations, result notifications, and vaccination reminders
 - **Client Communication**: Multi-channel notification system allowing veterinarians to send professional communications via WhatsApp
 - **Enhanced Database Schema**: Added comprehensive client fields including RUT validation, emergency contacts, and medical history tracking
+- **Veterinary Nutrition Calculator**: Complete kilocalorie calculation system using RER/DER formulas with exact veterinary factors for all life stages and conditions
+- **Species-Specific Nutrition Factors**: Precise factors for puppies, adults, seniors, work dogs, indoor/outdoor cats, pregnancy, lactation, and weight management
+- **Food Amount Calculator**: Automatic calculation of daily food portions based on commercial pet food caloric density with Chilean market brands
 
 ### Latest Updates (August 2025)
 

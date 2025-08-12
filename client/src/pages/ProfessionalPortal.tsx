@@ -155,8 +155,7 @@ const ProfessionalPortal = () => {
   
   // Estado para cálculo nutricional
   const [nutritionData, setNutritionData] = useState({
-    activityLevel: 'normal',
-    reproductiveStatus: 'neutered',
+    activityLevel: 'neutered_sedentary', // Valor por defecto para adultos
     selectedFood: '',
     customKcalPer100g: ''
   });
@@ -209,8 +208,7 @@ const ProfessionalPortal = () => {
       species: formData.species,
       weight: weight,
       bcs: formData.bcs,
-      activityLevel: nutritionData.activityLevel,
-      reproductiveStatus: nutritionData.reproductiveStatus
+      activityLevel: nutritionData.activityLevel
     };
 
     const result = VeterinaryNutritionCalculator.calculateDER(params);
@@ -1132,49 +1130,46 @@ EJEMPLOS: Hormonas tiroideas, cortisol, progesterona, pruebas alérgicas.`,
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="activityLevel">Nivel de Actividad</Label>
-                <Select 
-                  value={nutritionData.activityLevel} 
-                  onValueChange={(value) => {
-                    const updated = {...nutritionData, activityLevel: value};
-                    setNutritionData(updated);
-                    calculateNutrition(petFormData);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sedentary">Sedentario</SelectItem>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="active">Activo</SelectItem>
-                    <SelectItem value="working">Trabajo/Competencia</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="reproductiveStatus">Estado Reproductivo</Label>
-                <Select 
-                  value={nutritionData.reproductiveStatus} 
-                  onValueChange={(value) => {
-                    const updated = {...nutritionData, reproductiveStatus: value};
-                    setNutritionData(updated);
-                    calculateNutrition(petFormData);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="intact">Entero</SelectItem>
-                    <SelectItem value="neutered">Castrado</SelectItem>
-                    <SelectItem value="pregnant">Gestante</SelectItem>
-                    <SelectItem value="lactating">Lactante</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div>
+              <Label htmlFor="activityLevel">Condición y Nivel de Actividad</Label>
+              <Select 
+                value={nutritionData.activityLevel} 
+                onValueChange={(value) => {
+                  const updated = {...nutritionData, activityLevel: value};
+                  setNutritionData(updated);
+                  calculateNutrition(petFormData);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {petFormData.species === 'Perro' ? (
+                    <>
+                      <SelectItem value="puppy_under4">Cachorro &lt; 4 meses (Factor 3.0)</SelectItem>
+                      <SelectItem value="puppy_over4">Cachorro &gt; 4 meses (Factor 2.0)</SelectItem>
+                      <SelectItem value="neutered_sedentary">Adulto esterilizado/sedentario (Factor 1.6)</SelectItem>
+                      <SelectItem value="active">Adulto activo (Factor 2.0)</SelectItem>
+                      <SelectItem value="light_work">Trabajo ligero - Deporte/Agility (Factor 2.5-4.0)</SelectItem>
+                      <SelectItem value="heavy_work">Trabajo pesado - Trineo/Rescate (Factor 4.0-8.0)</SelectItem>
+                      <SelectItem value="weight_loss">Pérdida de peso (Factor 1.0)</SelectItem>
+                      <SelectItem value="weight_gain">Ganancia de peso (Factor 1.2-1.4)</SelectItem>
+                      <SelectItem value="geriatric">Geriátrico (Factor 1.2-1.4)</SelectItem>
+                    </>
+                  ) : (
+                    <>
+                      <SelectItem value="kitten">Gatito en crecimiento (Factor 2.5)</SelectItem>
+                      <SelectItem value="indoor_sedentary">Adulto esterilizado/indoor (Factor 1.2-1.4)</SelectItem>
+                      <SelectItem value="outdoor_active">Adulto activo/outdoor (Factor 1.4-1.6)</SelectItem>
+                      <SelectItem value="pregnant">Gestación (Factor 2.0)</SelectItem>
+                      <SelectItem value="lactating">Lactancia (Factor 2.0-6.0)</SelectItem>
+                      <SelectItem value="weight_loss">Pérdida de peso (Factor 0.8)</SelectItem>
+                      <SelectItem value="weight_gain">Ganancia de peso (Factor 1.2)</SelectItem>
+                      <SelectItem value="geriatric">Geriátrico sedentario (Factor 1.0-1.1)</SelectItem>
+                    </>
+                  )}
+                </SelectContent>
+              </Select>
             </div>
 
             {nutritionResult && (
