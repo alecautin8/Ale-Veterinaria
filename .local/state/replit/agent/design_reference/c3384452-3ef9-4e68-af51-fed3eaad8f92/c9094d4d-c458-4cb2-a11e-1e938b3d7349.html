@@ -1,0 +1,928 @@
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetHome Chile - Atención Veterinaria a Domicilio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'mint': '#10B981',
+                    'lavender': '#A855F7',
+                    'turquoise': '#06B6D4',
+                    'pale-pink': '#F9A8D4',
+                    'warm-beige': '#FEF7ED'
+                },
+                fontFamily: {
+                    'poppins': ['Poppins', 'sans-serif'],
+                    'lato': ['Lato', 'sans-serif']
+                }
+            }
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-lato bg-warm-beige">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-heart text-pale-pink text-2xl mr-2"></i>
+                        <span class="font-poppins font-bold text-xl text-gray-800">VetHome</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 hover:text-mint transition-colors">Inicio</a>
+                    <a href="#services" class="nav-link text-gray-700 hover:text-mint transition-colors">Servicios</a>
+                    <a href="#coverage" class="nav-link text-gray-700 hover:text-mint transition-colors">Cobertura</a>
+                    <button onclick="showLogin('tutor')" class="bg-turquoise text-white px-4 py-2 rounded-lg hover:bg-turquoise/90 transition-colors">Portal Tutor</button>
+                    <button onclick="showLogin('vet')" class="bg-lavender text-white px-4 py-2 rounded-lg hover:bg-lavender/90 transition-colors">Portal Veterinario</button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-mint">Inicio</a>
+                <a href="#services" class="block px-3 py-2 text-gray-700 hover:text-mint">Servicios</a>
+                <a href="#coverage" class="block px-3 py-2 text-gray-700 hover:text-mint">Cobertura</a>
+                <button onclick="showLogin('tutor')" class="block w-full text-left px-3 py-2 text-turquoise">Portal Tutor</button>
+                <button onclick="showLogin('vet')" class="block w-full text-left px-3 py-2 text-lavender">Portal Veterinario</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Public Landing Page -->
+    <main id="public-page" class="pt-16">
+        <!-- Hero Section -->
+        <section id="home" class="bg-gradient-to-br from-mint/10 to-turquoise/10 py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="mb-12 lg:mb-0">
+                        <h1 class="font-poppins font-bold text-4xl lg:text-6xl text-gray-800 mb-6 leading-tight">
+                            Atención Veterinaria a Domicilio con 
+                            <span class="text-mint">Amor</span> y 
+                            <span class="text-lavender">Profesionalismo</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                            Brindamos cuidado veterinario profesional en la comodidad de tu hogar. 
+                            Tu mascota merece atención especializada sin el estrés del traslado.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="openCalendly()" class="bg-mint text-white px-8 py-4 rounded-xl font-semibold hover:bg-mint/90 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                Agendar Hora
+                            </button>
+                            <button onclick="document.getElementById('services').scrollIntoView()" class="border-2 border-mint text-mint px-8 py-4 rounded-xl font-semibold hover:bg-mint hover:text-white transition-all duration-300">
+                                Ver Servicios
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lg:text-right">
+                        <!-- Happy Yorkshire Terrier in cozy home environment -->
+                        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                             alt="Yorkshire Terrier feliz en ambiente hogareño" 
+                             class="rounded-3xl shadow-2xl w-full max-w-lg mx-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-poppins font-bold text-3xl lg:text-4xl text-gray-800 mb-4">
+                        Nuestros Servicios
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Ofrecemos atención veterinaria integral en la comodidad de tu hogar
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gradient-to-br from-mint/5 to-mint/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-mint text-4xl mb-4">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Consultas Generales</h3>
+                        <p class="text-gray-600">Revisiones completas, diagnósticos y tratamientos en el ambiente familiar de tu mascota.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-lavender/5 to-lavender/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-lavender text-4xl mb-4">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Vacunación</h3>
+                        <p class="text-gray-600">Plan completo de vacunación con productos Zoetis y MSD/Nobivac, certificados incluidos.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-turquoise/5 to-turquoise/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-turquoise text-4xl mb-4">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Desparasitación</h3>
+                        <p class="text-gray-600">Tratamientos preventivos y curativos contra parásitos internos y externos.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-pale-pink/5 to-pale-pink/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-pale-pink text-4xl mb-4">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Certificados</h3>
+                        <p class="text-gray-600">Certificados de salud, exportación y documentación oficial para viajes.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-mint/5 to-turquoise/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-mint text-4xl mb-4">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Exámenes</h3>
+                        <p class="text-gray-600">Toma de muestras y coordinación de exámenes de laboratorio especializados.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-lavender/5 to-pale-pink/10 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-lavender text-4xl mb-4">
+                            <i class="fas fa-prescription-bottle"></i>
+                        </div>
+                        <h3 class="font-poppins font-semibold text-xl mb-3 text-gray-800">Recetas</h3>
+                        <p class="text-gray-600">Prescripciones médicas personalizadas con seguimiento del tratamiento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coverage & Payment Section -->
+        <section id="coverage" class="py-20 bg-warm-beige">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-16">
+                    <!-- Coverage Areas -->
+                    <div class="mb-12 lg:mb-0">
+                        <h2 class="font-poppins font-bold text-3xl text-gray-800 mb-8">Zonas de Cobertura</h2>
+                        <div class="bg-white p-8 rounded-2xl shadow-lg">
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">Las Condes</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">Providencia</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">Vitacura</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">La Reina</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">Ñuñoa</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-mint mr-3"></i>
+                                    <span class="text-gray-700">Santiago Centro</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-6">
+                                ¿Tu comuna no está en la lista? Contáctanos para consultar disponibilidad.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div>
+                        <h2 class="font-poppins font-bold text-3xl text-gray-800 mb-8">Métodos de Pago</h2>
+                        <div class="bg-white p-8 rounded-2xl shadow-lg">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div class="flex items-center">
+                                    <i class="fas fa-credit-card text-lavender mr-4 text-xl"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Tarjetas de Crédito/Débito</h4>
+                                        <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-mobile-alt text-turquoise mr-4 text-xl"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Transferencia Electrónica</h4>
+                                        <p class="text-sm text-gray-600">Inmediata o programada</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-money-bill-wave text-pale-pink mr-4 text-xl"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Efectivo</h4>
+                                        <p class="text-sm text-gray-600">Al momento de la consulta</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-receipt text-mint mr-4 text-xl"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Boleta/Factura</h4>
+                                        <p class="text-sm text-gray-600">Documentación tributaria disponible</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 bg-gradient-to-r from-mint to-turquoise">
+            <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <h2 class="font-poppins font-bold text-3xl lg:text-4xl text-white mb-6">
+                    ¿Listo para cuidar a tu mascota?
+                </h2>
+                <p class="text-xl text-white/90 mb-8">
+                    Agenda tu cita ahora y brinda a tu mascota la atención que merece
+                </p>
+                <button onclick="openCalendly()" class="bg-white text-mint px-10 py-4 rounded-xl font-semibold text-lg hover:bg-gray-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Agendar Cita Ahora
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-6">
+                <h3 id="login-title" class="font-poppins font-bold text-2xl text-gray-800 mb-2">Portal Veterinario</h3>
+                <p class="text-gray-600">Ingresa tus credenciales</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
+                    <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Contraseña</label>
+                    <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" id="login-btn" class="flex-1 bg-mint text-white py-3 rounded-lg hover:bg-mint/90 transition-colors font-semibold">
+                        Ingresar
+                    </button>
+                    <button type="button" onclick="hideLogin()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors font-semibold">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Veterinarian Portal -->
+    <div id="vet-portal" class="hidden pt-16 min-h-screen bg-warm-beige">
+        <!-- @COMPONENT: VetPortalHeader -->
+        <div class="bg-white shadow-lg mb-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="font-poppins font-bold text-2xl text-gray-800">Portal Veterinario</h1>
+                        <p class="text-gray-600">Dr. <span data-bind="user.name">María González</span></p>
+                    </div>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: VetPortalHeader -->
+
+        <!-- @COMPONENT: VetDashboard -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Search Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="font-poppins font-semibold text-xl mb-4 text-gray-800">Buscar Paciente</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Número de Ficha</label>
+                        <input type="text" id="search-ficha" placeholder="Ej: 001234" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre Mascota</label>
+                        <input type="text" id="search-name" placeholder="Ej: Max" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">RUT Tutor</label>
+                        <input type="text" id="search-rut" placeholder="12.345.678-9" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                    </div>
+                </div>
+                <button onclick="searchPatient()" class="mt-4 bg-mint text-white px-6 py-2 rounded-lg hover:bg-mint/90 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Buscar
+                </button>
+            </div>
+
+            <!-- Patient Management -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Patient List -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="font-poppins font-semibold text-lg mb-4 text-gray-800">Pacientes Recientes</h3>
+                        <!-- @MAP: recentPatients.map(patient => ( -->
+                        <div class="border-b border-gray-200 pb-3 mb-3 cursor-pointer hover:bg-gray-50 p-2 rounded" onclick="selectPatient('patient1')">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800" data-bind="patient.name">Max</h4>
+                                    <p class="text-sm text-gray-600" data-bind="patient.breed">Golden Retriever</p>
+                                    <p class="text-xs text-gray-500">Ficha: <span data-bind="patient.ficha">001234</span></p>
+                                </div>
+                                <span class="text-xs bg-mint/10 text-mint px-2 py-1 rounded-full">Activo</span>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+                        <div class="border-b border-gray-200 pb-3 mb-3 cursor-pointer hover:bg-gray-50 p-2 rounded" onclick="selectPatient('patient2')">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Luna</h4>
+                                    <p class="text-sm text-gray-600">Gato Persa</p>
+                                    <p class="text-xs text-gray-500">Ficha: 001235</p>
+                                </div>
+                                <span class="text-xs bg-lavender/10 text-lavender px-2 py-1 rounded-full">Seguimiento</span>
+                            </div>
+                        </div>
+                        <button onclick="showNewPatientForm()" class="w-full mt-4 bg-lavender text-white py-2 rounded-lg hover:bg-lavender/90 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Nuevo Paciente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Patient Details -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-poppins font-semibold text-lg text-gray-800">Ficha Clínica</h3>
+                            <div class="flex gap-2">
+                                <button onclick="showVaccineForm()" class="bg-mint text-white px-4 py-2 rounded-lg hover:bg-mint/90 transition-colors text-sm">
+                                    <i class="fas fa-syringe mr-1"></i>Vacuna
+                                </button>
+                                <button onclick="showConsultationForm()" class="bg-turquoise text-white px-4 py-2 rounded-lg hover:bg-turquoise/90 transition-colors text-sm">
+                                    <i class="fas fa-stethoscope mr-1"></i>Consulta
+                                </button>
+                                <button onclick="generateCertificate()" class="bg-lavender text-white px-4 py-2 rounded-lg hover:bg-lavender/90 transition-colors text-sm">
+                                    <i class="fas fa-file-pdf mr-1"></i>Certificado
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Patient Info -->
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Información del Paciente</h4>
+                                <div class="space-y-2 text-sm">
+                                    <p><span class="font-medium">Nombre:</span> <span data-bind="selectedPatient.name">Max</span></p>
+                                    <p><span class="font-medium">Especie:</span> <span data-bind="selectedPatient.species">Canino</span></p>
+                                    <p><span class="font-medium">Raza:</span> <span data-bind="selectedPatient.breed">Golden Retriever</span></p>
+                                    <p><span class="font-medium">Edad:</span> <span data-bind="selectedPatient.age">3 años</span></p>
+                                    <p><span class="font-medium">Peso:</span> <span data-bind="selectedPatient.weight">28 kg</span></p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Información del Tutor</h4>
+                                <div class="space-y-2 text-sm">
+                                    <p><span class="font-medium">Nombre:</span> <span data-bind="selectedPatient.owner.name">Carlos Pérez</span></p>
+                                    <p><span class="font-medium">RUT:</span> <span data-bind="selectedPatient.owner.rut">12.345.678-9</span></p>
+                                    <p><span class="font-medium">Teléfono:</span> <span data-bind="selectedPatient.owner.phone">+56 9 8765 4321</span></p>
+                                    <p><span class="font-medium">Email:</span> <span data-bind="selectedPatient.owner.email">carlos@email.com</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical History -->
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-4">Historial Médico</h4>
+                            <div class="space-y-4">
+                                <!-- @MAP: medicalHistory.map(record => ( -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <span class="bg-mint/10 text-mint px-2 py-1 rounded text-xs font-medium mr-2" data-bind="record.type">Vacuna</span>
+                                            <span class="text-sm text-gray-600" data-bind="record.date">15/03/2024</span>
+                                        </div>
+                                        <button onclick="downloadPDF('record1')" class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm text-gray-800 mb-1" data-bind="record.title">Vacuna Séxtuple - Zoetis</p>
+                                    <p class="text-sm text-gray-600" data-bind="record.description">Aplicación de vacuna séxtuple. Próxima dosis en 21 días.</p>
+                                </div>
+                                <!-- @END_MAP )) -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <span class="bg-turquoise/10 text-turquoise px-2 py-1 rounded text-xs font-medium mr-2">Consulta</span>
+                                            <span class="text-sm text-gray-600">10/03/2024</span>
+                                        </div>
+                                        <button onclick="downloadPDF('record2')" class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm text-gray-800 mb-1">Control General</p>
+                                    <p class="text-sm text-gray-600">Examen físico completo. Estado general excelente. Se recomienda continuidad en la alimentación actual.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: VetDashboard -->
+    </div>
+
+    <!-- Pet Owner Portal -->
+    <div id="tutor-portal" class="hidden pt-16 min-h-screen bg-warm-beige">
+        <!-- @COMPONENT: TutorPortalHeader -->
+        <div class="bg-white shadow-lg mb-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="font-poppins font-bold text-2xl text-gray-800">Portal del Tutor</h1>
+                        <p class="text-gray-600">Bienvenido, <span data-bind="user.name">Carlos Pérez</span></p>
+                    </div>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: TutorPortalHeader -->
+
+        <!-- @COMPONENT: TutorDashboard -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- My Pets Section -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Pet List -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="font-poppins font-semibold text-lg mb-4 text-gray-800">Mis Mascotas</h3>
+                        <!-- @MAP: userPets.map(pet => ( -->
+                        <div class="border-b border-gray-200 pb-3 mb-3 cursor-pointer hover:bg-gray-50 p-2 rounded" onclick="selectPet('pet1')">
+                            <div class="flex items-center">
+                                <!-- Cute pet photo in home setting -->
+                                <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                                     alt="Max - Golden Retriever" 
+                                     class="w-12 h-12 rounded-full object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800" data-bind="pet.name">Max</h4>
+                                    <p class="text-sm text-gray-600" data-bind="pet.breed">Golden Retriever</p>
+                                    <p class="text-xs text-gray-500" data-bind="pet.age">3 años</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+                        <div class="border-b border-gray-200 pb-3 mb-3 cursor-pointer hover:bg-gray-50 p-2 rounded" onclick="selectPet('pet2')">
+                            <div class="flex items-center">
+                                <!-- Adorable cat in cozy home environment -->
+                                <img src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                                     alt="Luna - Gato Persa" 
+                                     class="w-12 h-12 rounded-full object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Luna</h4>
+                                    <p class="text-sm text-gray-600">Gato Persa</p>
+                                    <p class="text-xs text-gray-500">2 años</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+                        <h3 class="font-poppins font-semibold text-lg mb-4 text-gray-800">Acciones Rápidas</h3>
+                        <div class="space-y-3">
+                            <button onclick="openCalendly()" class="w-full bg-mint text-white py-3 rounded-lg hover:bg-mint/90 transition-colors">
+                                <i class="fas fa-calendar-alt mr-2"></i>Agendar Cita
+                            </button>
+                            <button onclick="downloadVaccineCard()" class="w-full bg-turquoise text-white py-3 rounded-lg hover:bg-turquoise/90 transition-colors">
+                                <i class="fas fa-id-card mr-2"></i>Carnet de Vacunas
+                            </button>
+                            <button onclick="downloadAllRecords()" class="w-full bg-lavender text-white py-3 rounded-lg hover:bg-lavender/90 transition-colors">
+                                <i class="fas fa-download mr-2"></i>Descargar Historial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pet Details -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-poppins font-semibold text-lg text-gray-800">Información de <span data-bind="selectedPet.name">Max</span></h3>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Vacunas al día</span>
+                        </div>
+
+                        <!-- Pet Info Card -->
+                        <div class="bg-gradient-to-br from-mint/5 to-turquoise/5 rounded-lg p-6 mb-6">
+                            <div class="flex items-center mb-4">
+                                <!-- Pet photo in home environment -->
+                                <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" 
+                                     alt="Max en casa" 
+                                     class="w-20 h-20 rounded-full object-cover mr-6">
+                                <div class="grid grid-cols-2 gap-4 flex-1">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Especie</p>
+                                        <p class="text-gray-800" data-bind="selectedPet.species">Canino</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Raza</p>
+                                        <p class="text-gray-800" data-bind="selectedPet.breed">Golden Retriever</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Edad</p>
+                                        <p class="text-gray-800" data-bind="selectedPet.age">3 años</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Peso</p>
+                                        <p class="text-gray-800" data-bind="selectedPet.weight">28 kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical History for Pet Owner -->
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-4">Historial Médico</h4>
+                            <div class="grid gap-4">
+                                <!-- @MAP: petMedicalHistory.map(record => ( -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-mint/10 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="fas fa-syringe text-mint"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-semibold text-gray-800" data-bind="record.title">Vacuna Séxtuple</h5>
+                                                <p class="text-sm text-gray-600" data-bind="record.date">15 de Marzo, 2024</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="downloadPDF('record1')" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded-lg text-sm transition-colors">
+                                            <i class="fas fa-download mr-1"></i>PDF
+                                        </button>
+                                    </div>
+                                    <p class="text-sm text-gray-700 mb-2" data-bind="record.description">Aplicación de vacuna séxtuple Zoetis. Protege contra moquillo, hepatitis, parvovirus, parainfluenza, leptospirosis y coronavirus.</p>
+                                    <div class="text-xs text-gray-500">
+                                        <span>Dr. <span data-bind="record.vet">María González</span></span>
+                                        <span class="mx-2">•</span>
+                                        <span>Próxima dosis: <span data-bind="record.nextDose">05/04/2024</span></span>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-turquoise/10 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="fas fa-stethoscope text-turquoise"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-semibold text-gray-800">Control General</h5>
+                                                <p class="text-sm text-gray-600">10 de Marzo, 2024</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="downloadPDF('record2')" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded-lg text-sm transition-colors">
+                                            <i class="fas fa-download mr-1"></i>PDF
+                                        </button>
+                                    </div>
+                                    <p class="text-sm text-gray-700 mb-2">Examen físico completo. Estado general excelente. Peso ideal para su edad y raza. Se recomienda continuar con la alimentación actual.</p>
+                                    <div class="text-xs text-gray-500">
+                                        <span>Dr. María González</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Próximo control: 10/06/2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: TutorDashboard -->
+    </div>
+
+    <!-- Vaccine Form Modal -->
+    <div id="vaccine-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 class="font-poppins font-bold text-2xl text-gray-800 mb-6">Registrar Vacuna</h3>
+            <form onsubmit="saveVaccine(event)">
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Aplicación</label>
+                        <input type="date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">Vacuna</label>
+                        <select onchange="autoCompleteVaccine(this.value)" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                            <option value="">Seleccionar vacuna</option>
+                            <option value="sextuple-zoetis">Séxtuple - Zoetis</option>
+                            <option value="rabia-nobivac">Rabia - Nobivac</option>
+                            <option value="tos-kennel">Tos de las Perreras - MSD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">Laboratorio</label>
+                        <input type="text" id="vaccine-lab" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">Lote</label>
+                        <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Patógenos Cubiertos</label>
+                    <textarea id="vaccine-pathogens" rows="3" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50"></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Observaciones</label>
+                    <textarea rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-transparent"></textarea>
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" class="flex-1 bg-mint text-white py-3 rounded-lg hover:bg-mint/90 transition-colors font-semibold">
+                        Guardar Vacuna
+                    </button>
+                    <button type="button" onclick="hideVaccineForm()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors font-semibold">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-heart text-pale-pink text-2xl mr-2"></i>
+                        <span class="font-poppins font-bold text-xl">VetHome</span>
+                    </div>
+                    <p class="text-gray-300">Atención veterinaria profesional en la comodidad de tu hogar.</p>
+                </div>
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>Consultas Generales</li>
+                        <li>Vacunación</li>
+                        <li>Desparasitación</li>
+                        <li>Certificados</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><i class="fas fa-phone mr-2"></i>+56 9 1234 5678</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@vethome.cl</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Santiago, Chile</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 VetHome Chile. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global state management
+        let currentUser = null;
+        let currentUserType = null;
+        let selectedPatient = null;
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Login modal management
+        function showLogin(userType) {
+            const modal = document.getElementById('login-modal');
+            const title = document.getElementById('login-title');
+            const btn = document.getElementById('login-btn');
+            
+            if (userType === 'vet') {
+                title.textContent = 'Portal Veterinario';
+                btn.className = 'flex-1 bg-lavender text-white py-3 rounded-lg hover:bg-lavender/90 transition-colors font-semibold';
+            } else {
+                title.textContent = 'Portal del Tutor';
+                btn.className = 'flex-1 bg-turquoise text-white py-3 rounded-lg hover:bg-turquoise/90 transition-colors font-semibold';
+            }
+            
+            currentUserType = userType;
+            modal.classList.remove('hidden');
+        }
+
+        function hideLogin() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        // Authentication simulation
+        function handleLogin(event) {
+            event.preventDefault();
+            // TODO: Implement Firebase Authentication
+            
+            // Simulate successful login
+            hideLogin();
+            document.getElementById('public-page').classList.add('hidden');
+            
+            if (currentUserType === 'vet') {
+                document.getElementById('vet-portal').classList.remove('hidden');
+            } else {
+                document.getElementById('tutor-portal').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            // TODO: Implement Firebase logout
+            document.getElementById('public-page').classList.remove('hidden');
+            document.getElementById('vet-portal').classList.add('hidden');
+            document.getElementById('tutor-portal').classList.add('hidden');
+            currentUser = null;
+            currentUserType = null;
+        }
+
+        // Calendly integration
+        function openCalendly() {
+            // TODO: Integrate with Calendly API
+            alert('Integración con Calendly: Aquí se abriría el calendario de citas disponibles.');
+        }
+
+        // Search functionality
+        function searchPatient() {
+            const ficha = document.getElementById('search-ficha').value;
+            const name = document.getElementById('search-name').value;
+            const rut = document.getElementById('search-rut').value;
+            
+            // TODO: Implement intelligent search with Firebase
+            // RUT validation with module 11 algorithm
+            if (rut) {
+                validateRUT(rut);
+            }
+            
+            console.log('Buscando paciente:', { ficha, name, rut });
+        }
+
+        // RUT validation (Chilean ID)
+        function validateRUT(rut) {
+            // Remove dots and dash
+            const cleanRUT = rut.replace(/\./g, '').replace('-', '');
+            
+            if (cleanRUT.length < 8) return false;
+            
+            const body = cleanRUT.slice(0, -1);
+            const dv = cleanRUT.slice(-1).toLowerCase();
+            
+            // Calculate verification digit using module 11
+            let sum = 0;
+            let multiplier = 2;
+            
+            for (let i = body.length - 1; i >= 0; i--) {
+                sum += parseInt(body[i]) * multiplier;
+                multiplier = multiplier === 7 ? 2 : multiplier + 1;
+            }
+            
+            const remainder = sum % 11;
+            const calculatedDV = remainder === 0 ? '0' : remainder === 1 ? 'k' : (11 - remainder).toString();
+            
+            return calculatedDV === dv;
+        }
+
+        // Format RUT input
+        function formatRUT(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 1) {
+                value = value.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + value.slice(-1);
+            }
+            input.value = value;
+        }
+
+        // Patient selection
+        function selectPatient(patientId) {
+            // TODO: Load patient data from Firebase
+            selectedPatient = patientId;
+            console.log('Paciente seleccionado:', patientId);
+        }
+
+        function selectPet(petId) {
+            // TODO: Load pet data from Firebase
+            console.log('Mascota seleccionada:', petId);
+        }
+
+        // Vaccine form management
+        function showVaccineForm() {
+            document.getElementById('vaccine-modal').classList.remove('hidden');
+        }
+
+        function hideVaccineForm() {
+            document.getElementById('vaccine-modal').classList.add('hidden');
+        }
+
+        // Vaccine autocomplete (Chilean market)
+        function autoCompleteVaccine(vaccineCode) {
+            const vaccines = {
+                'sextuple-zoetis': {
+                    lab: 'Zoetis',
+                    pathogens: 'Moquillo, Hepatitis infecciosa, Parvovirus, Parainfluenza, Leptospirosis, Coronavirus'
+                },
+                'rabia-nobivac': {
+                    lab: 'MSD/Nobivac',
+                    pathogens: 'Rabia'
+                },
+                'tos-kennel': {
+                    lab: 'MSD',
+                    pathogens: 'Bordetella bronchiseptica, Parainfluenza'
+                }
+            };
+            
+            const vaccine = vaccines[vaccineCode];
+            if (vaccine) {
+                document.getElementById('vaccine-lab').value = vaccine.lab;
+                document.getElementById('vaccine-pathogens').value = vaccine.pathogens;
+            }
+        }
+
+        function saveVaccine(event) {
+            event.preventDefault();
+            // TODO: Save vaccine data to Firebase with merge: true
+            hideVaccineForm();
+            alert('Vacuna registrada exitosamente');
+        }
+
+        // Form management
+        function showNewPatientForm() {
+            // TODO: Show new patient registration form
+            alert('Formulario de nuevo paciente');
+        }
+
+        function showConsultationForm() {
+            // TODO: Show consultation form
+            alert('Formulario de consulta');
+        }
+
+        // PDF generation
+        function generateCertificate() {
+            // TODO: Generate PDF certificate using html2pdf
+            alert('Generando certificado en PDF...');
+        }
+
+        function downloadPDF(recordId) {
+            // TODO: Download specific record PDF
+            alert(`Descargando PDF del registro: ${recordId}`);
+        }
+
+        function downloadVaccineCard() {
+            // TODO: Generate and download vaccine card
+            alert('Descargando carnet de vacunas...');
+        }
+
+        function downloadAllRecords() {
+            // TODO: Generate complete medical history PDF
+            alert('Descargando historial completo...');
+        }
+
+        // Initialize app
+        (function() {
+            // TODO: Initialize Firebase
+            // TODO: Check authentication state
+            // TODO: Load initial data
+            
+            // Add RUT formatting to RUT inputs
+            document.addEventListener('input', function(e) {
+                if (e.target.id === 'search-rut') {
+                    formatRUT(e.target);
+                }
+            });
+            
+            // Add date validation (no future dates)
+            document.addEventListener('input', function(e) {
+                if (e.target.type === 'date') {
+                    const today = new Date().toISOString().split('T')[0];
+                    if (e.target.value > today) {
+                        e.target.value = today;
+                        alert('No se pueden ingresar fechas futuras');
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
